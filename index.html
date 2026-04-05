@@ -250,34 +250,37 @@
       <option value="MP2">MP2</option>
       <option value="Cooperative">Cooperative</option>
     </select>
+    <select id="divStatus">
+      <option value="waiting">Waiting for Declaration</option>
+      <option value="declared">Declared</option>
+      <option value="credited">Credited</option>
+    </select>
     <input type="number" id="divCapital" placeholder="Capital / Principal" min="0" step="0.01">
-    <input type="number" id="divRate" placeholder="Declared Dividend / Gain Rate (%)" min="0" step="0.01">
-    <input type="number" id="divEarned" placeholder="Optional: Actual Earned Amount" min="0" step="0.01">
-    <input type="text" id="divNote" placeholder="Note / Year / Remarks">
+    <input type="number" id="divRate" placeholder="Declared Rate (%)" min="0" step="0.01">
+    <input type="number" id="divEarned" placeholder="Actual Earned (optional)" min="0" step="0.01">
+    <input type="number" id="divCurrent" placeholder="Current Value (optional)" min="0" step="0.01">
+    <input type="text" id="divNote" placeholder="Note / Year">
   </div>
   <div class="btn-row">
-    <button onclick="addDividendItem()" id="addDividendBtn">Add MP2 / Coop</button>
-    <button onclick="updateDividendItem()" id="updateDividendBtn" class="secondary-btn" style="display:none;">Update MP2 / Coop</button>
-    <button onclick="cancelDividendEdit()" id="cancelDividendBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+    <button onclick="addDividendItem()">Add MP2 / Coop</button>
   </div>
-  <p class="muted">Tax-free by design. If actual earned amount is blank, system computes based on capital × declared rate.</p>
+  <p class="muted">If Current Value is filled, it will be used in Net Worth. If blank, system computes based on earned or rate.</p>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
           <th>Name</th>
-          <th>Type</th>
+          <th>Status</th>
           <th>Capital</th>
-          <th>Declared %</th>
+          <th>Rate</th>
           <th>Earned</th>
-          <th>Total Value</th>
-          <th>Tax</th>
+          <th>Current Value</th>
           <th>Note</th>
-          <th>Action</th>
-          <th>Edit</th>
         </tr>
       </thead>
       <tbody id="dividendTableBody"></tbody>
+    </table>
+  </div>
     </table>
   </div>
 </div>
