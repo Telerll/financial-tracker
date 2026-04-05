@@ -3,526 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Financial Tracker | Savings & Investments</title>
+  <title>Financial Tracker (Tax Included)</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f8f3;
-      color: #1f2937;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    h1 {
-      text-align: center;
-      color: #2e7d32;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 25px;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .card h3 {
-      font-size: 15px;
-      color: #2e7d32;
-      margin-bottom: 8px;
-    }
-
-    .value {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .section {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .section h2 {
-      color: #2e7d32;
-      margin-bottom: 15px;
-      font-size: 22px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cfd8dc;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #2e7d32;
-    }
-
-    button {
-      background: #2e7d32;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #256428;
-    }
-
-    .secondary-btn {
-      background: #607d8b;
-    }
-
-    .secondary-btn:hover {
-      background: #4b636e;
-    }
-
-    .danger-btn {
-      background: #c62828;
-      margin-top: 10px;
-    }
-
-    .danger-btn:hover {
-      background: #a61f1f;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 15px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #e0e0e0;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
-
-    .muted {
-      color: #777;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-
-    .positive {
-      color: #2e7d32;
-      font-weight: bold;
-    }
-
-    .negative {
-      color: #c62828;
-      font-weight: bold;
-    }
-
-    .actions button {
-      width: auto;
-      padding: 8px 12px;
-      font-size: 13px;
-      margin-right: 6px;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #666;
-      margin-top: 10px;
-      font-size: 13px;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial; background: #f4f8f3; padding: 20px; }
+    .container { max-width: 1100px; margin: auto; }
+    h1 { text-align: center; color: #2e7d32; margin-bottom: 12px; }
+    .card { background: white; padding: 15px; border-radius: 12px; margin: 10px 0; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; border-radius: 8px; border: 1px solid #ccc; }
+    button { background: #2e7d32; color: white; border: none; }
+    table { width: 100%; margin-top: 10px; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+    th { background: #e8f5e9; }
     @media (max-width: 768px) {
-      body {
-        padding: 14px;
-      }
-
-      .section, .card {
-        padding: 15px;
-      }
-
-      .value {
-        font-size: 20px;
-      }
+      body { padding: 12px; }
+      .card { overflow-x: auto; }
+      table { min-width: 760px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💰 Financial Tracker</h1>
-    <p class="subtitle">Track your savings, digital bank interest, and investments in one place</p>
+<div class="container">
+  <h1>₱ Financial Tracker (with 20% Tax)</h1>
 
-    <div class="dashboard">
-      <div class="card">
-        <h3>Total Savings</h3>
-        <div class="value" id="totalSavings">₱0.00</div>
-      </div>
-      <div class="card">
-        <h3>Total Monthly Interest</h3>
-        <div class="value" id="totalMonthlyInterest">₱0.00</div>
-      </div>
-      <div class="card">
-        <h3>Total Investments Value</h3>
-        <div class="value" id="totalInvestments">₱0.00</div>
-      </div>
-      <div class="card">
-        <h3>Net Worth</h3>
-        <div class="value" id="netWorth">₱0.00</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>🏦 Savings / Bank Tracker</h2>
-      <div class="form-grid">
-        <input type="text" id="bankName" placeholder="Bank / Digital Bank Name" />
-        <select id="bankType">
-          <option value="Traditional Bank">Traditional Bank</option>
-          <option value="Digital Bank">Digital Bank</option>
-          <option value="E-Wallet">E-Wallet</option>
-        </select>
-        <input type="number" id="bankBalance" placeholder="Current Balance" min="0" step="0.01" />
-        <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01" />
-        <input type="text" id="rateNotes" placeholder="Rate Notes / Promo Until" />
-      </div>
-      <button onclick="addSavingsAccount()">Add Savings Account</button>
-      <p class="muted">Monthly interest formula: Balance × (Annual Rate ÷ 100 ÷ 12)</p>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Bank</th>
-              <th>Type</th>
-              <th>Balance</th>
-              <th>Annual Rate</th>
-              <th>Monthly Interest</th>
-              <th>Projected 1 Year</th>
-              <th>Notes</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="savingsTableBody"></tbody>
-        </table>
-      </div>
-      <button class="danger-btn" onclick="clearSavings()">Clear All Savings Accounts</button>
-    </div>
-
-    <div class="section">
-      <h2>📈 Investment Tracker</h2>
-      <div class="form-grid">
-        <input type="text" id="investmentName" placeholder="Investment Name" />
-        <select id="investmentType">
-          <option value="Stocks">Stocks</option>
-          <option value="Mutual Fund">Mutual Fund</option>
-          <option value="UITF">UITF</option>
-          <option value="MP2">MP2</option>
-          <option value="Crypto">Crypto</option>
-          <option value="Business">Business</option>
-          <option value="Other">Other</option>
-        </select>
-        <input type="number" id="capital" placeholder="Capital / Amount Invested" min="0" step="0.01" />
-        <input type="number" id="currentValue" placeholder="Current Value" min="0" step="0.01" />
-        <input type="text" id="investmentNotes" placeholder="Notes" />
-      </div>
-      <button onclick="addInvestment()">Add Investment</button>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Capital</th>
-              <th>Current Value</th>
-              <th>Gain / Loss</th>
-              <th>% Growth</th>
-              <th>Notes</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="investmentTableBody"></tbody>
-        </table>
-      </div>
-      <button class="danger-btn" onclick="clearInvestments()">Clear All Investments</button>
-    </div>
-
-    <div class="section">
-      <h2>🎯 Quick Summary</h2>
-      <div class="form-grid">
-        <div class="card">
-          <h3>Best Savings Rate</h3>
-          <div class="value" id="bestRate">—</div>
-        </div>
-        <div class="card">
-          <h3>Top Investment</h3>
-          <div class="value" id="topInvestment">—</div>
-        </div>
-      </div>
-      <button class="secondary-btn" onclick="exportData()">Export Backup (JSON)</button>
-      <p class="footer-note">Your data is saved in your browser using local storage.</p>
-    </div>
+  <div class="card">
+    <h3>Add Bank / Cooperative</h3>
+    <input id="name" placeholder="Bank Name / Cooperative">
+    <input id="balance" type="number" placeholder="Balance">
+    <input id="rate" type="number" placeholder="Interest %">
+    <label style="display:block; margin:6px 0; font-size:14px;">
+      <input id="isCoop" type="checkbox" style="width:auto; margin-right:8px;">
+      Cooperative / Tax-Free
+    </label>
+    <button onclick="add()">Add</button>
   </div>
 
-  <script>
-    let savingsAccounts = JSON.parse(localStorage.getItem('savingsAccounts')) || [];
-    let investments = JSON.parse(localStorage.getItem('investments')) || [];
+  <div class="card">
+    <h3>Summary</h3>
+    <p>Total Savings: <b id="total">₱0</b></p>
+    <p>Total Net Interest: <b id="interest">₱0</b></p>
+  </div>
 
-    function formatCurrency(value) {
-      return new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP'
-      }).format(Number(value) || 0);
-    }
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Bank</th>
+          <th>Balance</th>
+          <th>Rate</th>
+          <th>Gross</th>
+          <th>Tax</th>
+          <th>Net</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody id="table"></tbody>
+    </table>
+  </div>
+</div>
 
-    function formatPercent(value) {
-      return `${Number(value || 0).toFixed(2)}%`;
-    }
+<script>
+let data = JSON.parse(localStorage.getItem('data')) || [];
 
-    function saveData() {
-      localStorage.setItem('savingsAccounts', JSON.stringify(savingsAccounts));
-      localStorage.setItem('investments', JSON.stringify(investments));
-    }
+function peso(n) {
+  return '₱' + Number(n).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
 
-    function addSavingsAccount() {
-      const bankName = document.getElementById('bankName').value.trim();
-      const bankType = document.getElementById('bankType').value;
-      const bankBalance = parseFloat(document.getElementById('bankBalance').value);
-      const annualRate = parseFloat(document.getElementById('annualRate').value);
-      const rateNotes = document.getElementById('rateNotes').value.trim();
+function add() {
+  let name = document.getElementById('name').value;
+  let balance = parseFloat(document.getElementById('balance').value);
+  let rate = parseFloat(document.getElementById('rate').value);
+  let isCoop = document.getElementById('isCoop').checked;
 
-      if (!bankName || isNaN(bankBalance) || isNaN(annualRate)) {
-        alert('Please complete the savings account details.');
-        return;
-      }
+  if (!name || isNaN(balance) || isNaN(rate)) {
+    alert('Please complete all fields.');
+    return;
+  }
 
-      const monthlyInterest = bankBalance * (annualRate / 100 / 12);
-      const projectedYearValue = bankBalance + (monthlyInterest * 12);
+  let gross = balance * (rate / 100 / 12);
+  let tax = isCoop ? 0 : gross * 0.20;
+  let net = gross - tax;
+  let note = isCoop ? 'Tax-free cooperative' : '20% tax applied';
 
-      savingsAccounts.push({
-        id: Date.now(),
-        bankName,
-        bankType,
-        bankBalance,
-        annualRate,
-        monthlyInterest,
-        projectedYearValue,
-        rateNotes
-      });
+  data.push({ name, balance, rate, gross, tax, net, note, isCoop });
+  localStorage.setItem('data', JSON.stringify(data));
 
-      document.getElementById('bankName').value = '';
-      document.getElementById('bankBalance').value = '';
-      document.getElementById('annualRate').value = '';
-      document.getElementById('rateNotes').value = '';
+  document.getElementById('name').value = '';
+  document.getElementById('balance').value = '';
+  document.getElementById('rate').value = '';
+  document.getElementById('isCoop').checked = false;
 
-      saveData();
-      renderSavings();
-      updateDashboard();
-      updateSummary();
-    }
+  render();
+}
 
-    function addInvestment() {
-      const investmentName = document.getElementById('investmentName').value.trim();
-      const investmentType = document.getElementById('investmentType').value;
-      const capital = parseFloat(document.getElementById('capital').value);
-      const currentValue = parseFloat(document.getElementById('currentValue').value);
-      const investmentNotes = document.getElementById('investmentNotes').value.trim();
+function render() {
+  let tbody = document.getElementById('table');
+  tbody.innerHTML = '';
 
-      if (!investmentName || isNaN(capital) || isNaN(currentValue)) {
-        alert('Please complete the investment details.');
-        return;
-      }
+  let total = 0, interest = 0;
 
-      const gainLoss = currentValue - capital;
-      const growthPercent = capital > 0 ? (gainLoss / capital) * 100 : 0;
+  data.forEach(d => {
+    total += d.balance;
+    interest += d.net;
 
-      investments.push({
-        id: Date.now(),
-        investmentName,
-        investmentType,
-        capital,
-        currentValue,
-        gainLoss,
-        growthPercent,
-        investmentNotes
-      });
+    tbody.innerHTML += `
+      <tr>
+        <td>${d.name}</td>
+        <td>${peso(d.balance)}</td>
+        <td>${d.rate}%</td>
+        <td>${peso(d.gross)}</td>
+        <td>${peso(d.tax)}</td>
+        <td>${peso(d.net)}</td>
+        <td>${d.note || (d.isCoop ? 'Tax-free cooperative' : '20% tax applied')}</td>
+      </tr>
+    `;
+  });
 
-      document.getElementById('investmentName').value = '';
-      document.getElementById('capital').value = '';
-      document.getElementById('currentValue').value = '';
-      document.getElementById('investmentNotes').value = '';
+  document.getElementById('total').innerText = peso(total);
+  document.getElementById('interest').innerText = peso(interest);
+}
 
-      saveData();
-      renderInvestments();
-      updateDashboard();
-      updateSummary();
-    }
-
-    function deleteSavings(id) {
-      savingsAccounts = savingsAccounts.filter(item => item.id !== id);
-      saveData();
-      renderSavings();
-      updateDashboard();
-      updateSummary();
-    }
-
-    function deleteInvestment(id) {
-      investments = investments.filter(item => item.id !== id);
-      saveData();
-      renderInvestments();
-      updateDashboard();
-      updateSummary();
-    }
-
-    function clearSavings() {
-      if (!confirm('Clear all savings accounts?')) return;
-      savingsAccounts = [];
-      saveData();
-      renderSavings();
-      updateDashboard();
-      updateSummary();
-    }
-
-    function clearInvestments() {
-      if (!confirm('Clear all investments?')) return;
-      investments = [];
-      saveData();
-      renderInvestments();
-      updateDashboard();
-      updateSummary();
-    }
-
-    function renderSavings() {
-      const tbody = document.getElementById('savingsTableBody');
-      tbody.innerHTML = '';
-
-      savingsAccounts.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.bankName}</td>
-          <td>${item.bankType}</td>
-          <td>${formatCurrency(item.bankBalance)}</td>
-          <td>${formatPercent(item.annualRate)}</td>
-          <td class="positive">${formatCurrency(item.monthlyInterest)}</td>
-          <td>${formatCurrency(item.projectedYearValue)}</td>
-          <td>${item.rateNotes || '-'}</td>
-          <td class="actions"><button onclick="deleteSavings(${item.id})">Delete</button></td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function renderInvestments() {
-      const tbody = document.getElementById('investmentTableBody');
-      tbody.innerHTML = '';
-
-      investments.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.investmentName}</td>
-          <td>${item.investmentType}</td>
-          <td>${formatCurrency(item.capital)}</td>
-          <td>${formatCurrency(item.currentValue)}</td>
-          <td class="${item.gainLoss >= 0 ? 'positive' : 'negative'}">${formatCurrency(item.gainLoss)}</td>
-          <td class="${item.growthPercent >= 0 ? 'positive' : 'negative'}">${formatPercent(item.growthPercent)}</td>
-          <td>${item.investmentNotes || '-'}</td>
-          <td class="actions"><button onclick="deleteInvestment(${item.id})">Delete</button></td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function updateDashboard() {
-      const totalSavings = savingsAccounts.reduce((sum, item) => sum + item.bankBalance, 0);
-      const totalMonthlyInterest = savingsAccounts.reduce((sum, item) => sum + item.monthlyInterest, 0);
-      const totalInvestments = investments.reduce((sum, item) => sum + item.currentValue, 0);
-      const netWorth = totalSavings + totalInvestments;
-
-      document.getElementById('totalSavings').textContent = formatCurrency(totalSavings);
-      document.getElementById('totalMonthlyInterest').textContent = formatCurrency(totalMonthlyInterest);
-      document.getElementById('totalInvestments').textContent = formatCurrency(totalInvestments);
-      document.getElementById('netWorth').textContent = formatCurrency(netWorth);
-    }
-
-    function updateSummary() {
-      if (savingsAccounts.length > 0) {
-        const best = [...savingsAccounts].sort((a, b) => b.annualRate - a.annualRate)[0];
-        document.getElementById('bestRate').textContent = `${best.bankName} (${formatPercent(best.annualRate)})`;
-      } else {
-        document.getElementById('bestRate').textContent = '—';
-      }
-
-      if (investments.length > 0) {
-        const top = [...investments].sort((a, b) => b.growthPercent - a.growthPercent)[0];
-        document.getElementById('topInvestment').textContent = `${top.investmentName} (${formatPercent(top.growthPercent)})`;
-      } else {
-        document.getElementById('topInvestment').textContent = '—';
-      }
-    }
-
-    function exportData() {
-      const data = {
-        savingsAccounts,
-        investments,
-        exportedAt: new Date().toISOString()
-      };
-
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'financial-tracker-backup.json';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    renderSavings();
-    renderInvestments();
-    updateDashboard();
-    updateSummary();
-  </script>
+render();
+</script>
 </body>
 </html>
