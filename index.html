@@ -1,132 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Financial Tracker (Tax Included)</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial; background: #f4f8f3; padding: 20px; }
-    .container { max-width: 1100px; margin: auto; }
-    h1 { text-align: center; color: #2e7d32; margin-bottom: 12px; }
-    .card { background: white; padding: 15px; border-radius: 12px; margin: 10px 0; }
-    input, button { padding: 10px; margin: 5px 0; width: 100%; border-radius: 8px; border: 1px solid #ccc; }
-    button { background: #2e7d32; color: white; border: none; }
-    table { width: 100%; margin-top: 10px; border-collapse: collapse; }
-    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
-    th { background: #e8f5e9; }
-    @media (max-width: 768px) {
-      body { padding: 12px; }
-      .card { overflow-x: auto; }
-      table { min-width: 760px; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>₱ Financial Tracker (ADB + Withdrawals)</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial;background:#f4f8f3;padding:14px}
+.container{max-width:1100px;margin:auto}
+h1{text-align:center;color:#2e7d32;margin-bottom:10px}
+.card{background:#fff;padding:14px;border-radius:12px;margin:10px 0}
+input,select,button{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ccc}
+button{background:#2e7d32;color:#fff;border:none}
+table{width:100%;margin-top:10px;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #ddd;font-size:14px}
+th{background:#e8f5e9}
+</style>
 </head>
 <body>
 <div class="container">
-  <h1>₱ Financial Tracker (with 20% Tax)</h1>
-
-  <div class="card">
-    <h3>Add Bank / Cooperative</h3>
-    <input id="name" placeholder="Bank Name / Cooperative">
-    <input id="balance" type="number" placeholder="Balance">
-    <input id="rate" type="number" placeholder="Interest %">
-    <label style="display:block; margin:6px 0; font-size:14px;">
-      <input id="isCoop" type="checkbox" style="width:auto; margin-right:8px;">
-      Cooperative / Tax-Free
-    </label>
-    <button onclick="add()">Add</button>
-  </div>
-
-  <div class="card">
-    <h3>Summary</h3>
-    <p>Total Savings: <b id="total">₱0</b></p>
-    <p>Total Net Interest: <b id="interest">₱0</b></p>
-  </div>
-
-  <div class="card">
-    <table>
-      <thead>
-        <tr>
-          <th>Bank</th>
-          <th>Balance</th>
-          <th>Rate</th>
-          <th>Gross</th>
-          <th>Tax</th>
-          <th>Net</th>
-          <th>Note</th>
-        </tr>
-      </thead>
-      <tbody id="table"></tbody>
-    </table>
-  </div>
-</div>
-
-<script>
+<h1>₱ Financial Tracker (ADB + Withdrawals)</h1><div class="card">
+<h3>Add Transaction</h3>
+<input id="name" placeholder="Bank / Cooperative">
+<select id="type">
+<option value="deposit">Deposit</option>
+<option value="withdraw">Withdrawal</option>
+</select>
+<input id="amount" type="number" placeholder="Amount">
+<input id="rate" type="number" placeholder="Interest %">
+<label><input type="checkbox" id="isCoop"> Cooperative (Tax-Free)</label>
+<button onclick="add()">Add</button>
+</div><div class="card">
+<h3>Summary</h3>
+<p>Total Balance: <b id="total">₱0</b></p>
+<p>ADB: <b id="adb">₱0</b></p>
+<p>Net Interest: <b id="interest">₱0</b></p>
+</div><div class="card">
+<table>
+<thead>
+<tr>
+<th>Bank</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Balance</th>
+<th>ADB</th>
+<th>Gross</th>
+<th>Tax</th>
+<th>Net</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+</div><div class="card">
+<h3>Investments (MP2 Tax-Free)</h3>
+<input id="invName" placeholder="Investment">
+<select id="invType">
+<option value="MP2">MP2 (Tax-Free)</option>
+<option value="Stocks">Stocks</option>
+<option value="Crypto">Crypto</option>
+<option value="Business">Business</option>
+</select>
+<input id="capital" type="number" placeholder="Capital">
+<input id="value" type="number" placeholder="Current Value">
+<button onclick="addInv()">Add Investment</button><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Capital</th>
+<th>Value</th>
+<th>Gain</th>
+</tr>
+</thead>
+<tbody id="invTable"></tbody>
+</table>
+</div></div><script>
 let data = JSON.parse(localStorage.getItem('data')) || [];
+let inv = JSON.parse(localStorage.getItem('inv')) || [];
 
-function peso(n) {
-  return '₱' + Number(n).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+function peso(n){return '₱'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2})}
+
+function add(){
+let name=document.getElementById('name').value;
+let type=document.getElementById('type').value;
+let amount=parseFloat(document.getElementById('amount').value);
+let rate=parseFloat(document.getElementById('rate').value);
+let isCoop=document.getElementById('isCoop').checked;
+
+if(!name||isNaN(amount)||isNaN(rate))return alert('Complete fields');
+
+let prevBalance=data.length?data[data.length-1].balance:0;
+let balance= type==='deposit'? prevBalance+amount : prevBalance-amount;
+
+// ADB (simple avg of balances)
+let totalBal=data.reduce((s,d)=>s+d.balance,0)+balance;
+let adb= totalBal/(data.length+1);
+
+let gross=adb*(rate/100/12);
+let tax=isCoop?0:gross*0.20;
+let net=gross-tax;
+
+data.push({name,type,amount,balance,adb,gross,tax,net,isCoop});
+localStorage.setItem('data',JSON.stringify(data));
+render();
 }
 
-function add() {
-  let name = document.getElementById('name').value;
-  let balance = parseFloat(document.getElementById('balance').value);
-  let rate = parseFloat(document.getElementById('rate').value);
-  let isCoop = document.getElementById('isCoop').checked;
+function render(){
+let tbody=document.getElementById('table');
+tbody.innerHTML='';
+let total=0,interest=0;
 
-  if (!name || isNaN(balance) || isNaN(rate)) {
-    alert('Please complete all fields.');
-    return;
-  }
+data.forEach(d=>{
+ total=d.balance;
+ interest+=d.net;
+ tbody.innerHTML+=`<tr>
+ <td>${d.name}</td>
+ <td>${d.type}</td>
+ <td>${peso(d.amount)}</td>
+ <td>${peso(d.balance)}</td>
+ <td>${peso(d.adb)}</td>
+ <td>${peso(d.gross)}</td>
+ <td>${peso(d.tax)}</td>
+ <td>${peso(d.net)}</td>
+ </tr>`;
+});
 
-  let gross = balance * (rate / 100 / 12);
-  let tax = isCoop ? 0 : gross * 0.20;
-  let net = gross - tax;
-  let note = isCoop ? 'Tax-free cooperative' : '20% tax applied';
-
-  data.push({ name, balance, rate, gross, tax, net, note, isCoop });
-  localStorage.setItem('data', JSON.stringify(data));
-
-  document.getElementById('name').value = '';
-  document.getElementById('balance').value = '';
-  document.getElementById('rate').value = '';
-  document.getElementById('isCoop').checked = false;
-
-  render();
+document.getElementById('total').innerText=peso(total);
+document.getElementById('adb').innerText=peso(data.length?data[data.length-1].adb:0);
+document.getElementById('interest').innerText=peso(interest);
 }
 
-function render() {
-  let tbody = document.getElementById('table');
-  tbody.innerHTML = '';
+function addInv(){
+let name=document.getElementById('invName').value;
+let type=document.getElementById('invType').value;
+let capital=parseFloat(document.getElementById('capital').value);
+let value=parseFloat(document.getElementById('value').value);
 
-  let total = 0, interest = 0;
+let gain=value-capital;
 
-  data.forEach(d => {
-    total += d.balance;
-    interest += d.net;
+inv.push({name,type,capital,value,gain});
+localStorage.setItem('inv',JSON.stringify(inv));
+renderInv();
+}
 
-    tbody.innerHTML += `
-      <tr>
-        <td>${d.name}</td>
-        <td>${peso(d.balance)}</td>
-        <td>${d.rate}%</td>
-        <td>${peso(d.gross)}</td>
-        <td>${peso(d.tax)}</td>
-        <td>${peso(d.net)}</td>
-        <td>${d.note || (d.isCoop ? 'Tax-free cooperative' : '20% tax applied')}</td>
-      </tr>
-    `;
-  });
-
-  document.getElementById('total').innerText = peso(total);
-  document.getElementById('interest').innerText = peso(interest);
+function renderInv(){
+let t=document.getElementById('invTable');
+t.innerHTML='';
+inv.forEach(i=>{
+ t.innerHTML+=`<tr>
+ <td>${i.name}</td>
+ <td>${i.type}</td>
+ <td>${peso(i.capital)}</td>
+ <td>${peso(i.value)}</td>
+ <td>${peso(i.gain)}</td>
+ </tr>`;
+});
 }
 
 render();
-</script>
-</body>
+renderInv();
+</script></body>
 </html>
