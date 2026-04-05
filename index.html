@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>₱ Financial Tracker - Full System</title>
+  <title>Financial Tracker</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -126,8 +126,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>₱ Financial Tracker</h1>
-    <p class="subtitle">Full version with beginning balance, savings transactions, daily/monthly interest logic, MP2 / cooperative tax-free tracking, and other investments</p><div class="dashboard">
+    <h1>Financial Tracker</h1>
+    <p class="subtitle">A personal finance dashboard for savings, interest tracking, MP2 and cooperative holdings, and investment monitoring.</p><div class="dashboard">
   <div class="card">
     <h3>Total Savings</h3>
     <div class="value" id="dashSavings">₱0.00</div>
@@ -151,17 +151,18 @@
 </div>
 
 <div class="section">
-  <h2>🏦 Add Savings Account</h2>
+  <h2>Add Savings Account</h2>
   <div class="form-grid">
-    <input type="text" id="accountName" placeholder="Bank / Digital Bank Name">
+    <input type="text" id="accountName" placeholder="Account Name">
     <select id="accountType">
       <option value="Traditional Bank">Traditional Bank</option>
       <option value="Digital Bank">Digital Bank</option>
       <option value="E-Wallet">E-Wallet</option>
     </select>
     <select id="interestMode">
-      <option value="traditional">Traditional Bank (daily accrued, monthly credit)</option>
-      <option value="digital">Digital Bank (daily credit)</option>
+      <option value="traditional">Traditional Bank (Daily Accrual, Monthly Credit)</option>
+      <option value="digital_daily">Digital Bank (Daily Accrual, Daily Credit)</option>
+      <option value="digital_monthly">Digital Bank (Daily Accrual, Monthly Credit)</option>
       <option value="simple">Simple Monthly Projection</option>
     </select>
     <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01">
@@ -173,11 +174,11 @@
     <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
     <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
   </div>
-  <p class="muted">Beginning balance is required para accurate ang starting computation. Traditional bank = daily accrued but monthly credit. Digital bank = daily credit. Both use 20% tax. Savings accounts here are separate from MP2 and cooperative.</p>
+  <p class="muted">Beginning balance and beginning date are required to support more accurate account-level calculations. Traditional banks typically use daily accrual with monthly crediting. Digital banks may use daily accrual with either daily or monthly crediting.</p>
 </div>
 
 <div class="section">
-  <h2>➕ Add Savings Transaction</h2>
+  <h2>Add Savings Transaction</h2>
   <div class="form-grid">
     <select id="transactionAccount"></select>
     <input type="date" id="transactionDate">
@@ -196,7 +197,7 @@
 </div>
 
 <div class="section">
-  <h2>📊 Savings Account Summary</h2>
+  <h2>Savings Account Summary</h2>
   <div class="table-wrap">
     <table>
       <thead>
@@ -222,7 +223,7 @@
 </div>
 
 <div class="section">
-  <h2>🧾 Savings Transactions</h2>
+  <h2>Savings Transactions</h2>
   <div class="table-wrap">
     <table>
       <thead>
@@ -243,7 +244,7 @@
 </div>
 
 <div class="section">
-  <h2>🤝 MP2 / Cooperative (Tax-Free)</h2>
+  <h2>MP2 / Cooperative (Tax-Free)</h2>
   <div class="form-grid">
     <input type="text" id="divName" placeholder="MP2 / Cooperative Name">
     <select id="divType">
@@ -264,7 +265,7 @@
   <div class="btn-row">
     <button onclick="addDividendItem()">Add MP2 / Coop</button>
   </div>
-  <p class="muted">If Current Value is filled, it will be used in Net Worth. If blank, system computes based on earned or rate.</p>
+  <p class="muted">If Current Value is provided, it will be used in net worth. If it is left blank, the system will compute value from earned amounts or the declared rate.</p>
   <div class="table-wrap">
     <table>
       <thead>
@@ -286,7 +287,7 @@
 </div>
 
 <div class="section">
-  <h2>📈 Other Investments</h2>
+  <h2>Other Investments</h2>
   <div class="form-grid">
     <input type="text" id="invName" placeholder="Investment Name">
     <select id="invType">
@@ -328,8 +329,8 @@
 </div>
 
 <div class="section">
-  <h2>📊 Yearly Summary</h2>
-  <p class="muted">Auto-summary per year for savings transactions, including deposits, withdrawals, estimated interest, and ending balance.</p>
+  <h2>Yearly Summary</h2>
+  <p class="muted">Annual summary of savings transactions, including deposits, withdrawals, estimated net interest, and ending balance.</p>
   <div class="table-wrap">
     <table>
       <thead>
@@ -347,12 +348,12 @@
 </div>
 
 <div class="section">
-  <h2>⚙️ Backup / Reset</h2>
+  <h2>Backup / Reset</h2>
   <div class="btn-row">
     <button class="secondary-btn" onclick="exportData()">Export Backup (JSON)</button>
     <button class="danger-btn" onclick="resetAllData()">Reset All Data</button>
   </div>
-  <p class="muted">Data is saved only on this browser using localStorage. If you change device or clear browser data, mawawala ito unless backed up.</p>
+  <p class="muted">Data is stored only in this browser using localStorage. If you change devices or clear browser data, your records will be lost unless you export a backup first.</p>
 </div>
 
   </div>  <script>
@@ -866,13 +867,15 @@
       accounts.forEach(account => {
         const m = computeSavingsMetrics(account);
         totalSavings += m.currentBalance;
-        totalInterest += account.interestMode === 'digital' ? m.accruedNet : m.monthlyNet;
+        totalInterest += account.interestMode === 'digital_daily' ? m.accruedNet : m.monthlyNet;
 
         const modeLabel = account.interestMode === 'traditional'
           ? 'Traditional'
-          : account.interestMode === 'digital'
-            ? 'Digital Daily'
-            : 'Simple Monthly';
+          : account.interestMode === 'digital_daily'
+            ? 'Digital Daily Credit'
+            : account.interestMode === 'digital_monthly'
+              ? 'Digital Monthly Credit'
+              : 'Simple Monthly';
 
         tbody.innerHTML += `
           <tr>
@@ -1097,7 +1100,7 @@
     }
 
     function renderAll() {
-      renderAccountOptions();
+      renderAccountOptions();u
       renderAccountsTable();
       renderTransactionsTable();
       renderDividendTable();
