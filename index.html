@@ -1,162 +1,599 @@
 <!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>₱ Financial Tracker (ADB + Withdrawals)</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial;background:#f4f8f3;padding:14px}
-.container{max-width:1100px;margin:auto}
-h1{text-align:center;color:#2e7d32;margin-bottom:10px}
-.card{background:#fff;padding:14px;border-radius:12px;margin:10px 0}
-input,select,button{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ccc}
-button{background:#2e7d32;color:#fff;border:none}
-table{width:100%;margin-top:10px;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #ddd;font-size:14px}
-th{background:#e8f5e9}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>₱ Financial Tracker - Running Balance / ADB</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8f3;
+      color: #1f2937;
+      padding: 16px;
+    }
+    .container { max-width: 1180px; margin: auto; }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .card, .section {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .card h3, .section h2 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+    .value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cfd8dc;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+    .secondary-btn { background: #607d8b; }
+    .danger-btn { background: #c62828; }
+    .muted {
+      color: #666;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+    th {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+    .positive { color: #2e7d32; font-weight: bold; }
+    .negative { color: #c62828; font-weight: bold; }
+    .inline-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      padding-top: 8px;
+    }
+    .inline-label input { width: auto; }
+    .btn-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .small { font-size: 12px; color: #666; }
+    @media (max-width: 768px) {
+      body { padding: 12px; }
+      .card, .section { padding: 14px; }
+      .value { font-size: 20px; }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<h1>₱ Financial Tracker (ADB + Withdrawals)</h1><div class="card">
-<h3>Add Transaction</h3>
-<input id="name" placeholder="Bank / Cooperative">
-<select id="type">
-<option value="deposit">Deposit</option>
-<option value="withdraw">Withdrawal</option>
-</select>
-<input id="amount" type="number" placeholder="Amount">
-<input id="rate" type="number" placeholder="Interest %">
-<label><input type="checkbox" id="isCoop"> Cooperative (Tax-Free)</label>
-<button onclick="add()">Add</button>
-</div><div class="card">
-<h3>Summary</h3>
-<p>Total Balance: <b id="total">₱0</b></p>
-<p>ADB: <b id="adb">₱0</b></p>
-<p>Net Interest: <b id="interest">₱0</b></p>
-</div><div class="card">
-<table>
-<thead>
-<tr>
-<th>Bank</th>
-<th>Type</th>
-<th>Amount</th>
-<th>Balance</th>
-<th>ADB</th>
-<th>Gross</th>
-<th>Tax</th>
-<th>Net</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
-</div><div class="card">
-<h3>Investments (MP2 Tax-Free)</h3>
-<input id="invName" placeholder="Investment">
-<select id="invType">
-<option value="MP2">MP2 (Tax-Free)</option>
-<option value="Stocks">Stocks</option>
-<option value="Crypto">Crypto</option>
-<option value="Business">Business</option>
-</select>
-<input id="capital" type="number" placeholder="Capital">
-<input id="value" type="number" placeholder="Current Value">
-<button onclick="addInv()">Add Investment</button><table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Capital</th>
-<th>Value</th>
-<th>Gain</th>
-</tr>
-</thead>
-<tbody id="invTable"></tbody>
-</table>
-</div></div><script>
-let data = JSON.parse(localStorage.getItem('data')) || [];
-let inv = JSON.parse(localStorage.getItem('inv')) || [];
+  <div class="container">
+    <h1>₱ Financial Tracker</h1>
+    <p class="subtitle">Savings tracker with deposit, withdrawal, running balance, average daily balance (ADB), and 20% tax / cooperative tax-free option</p><div class="dashboard">
+  <div class="card">
+    <h3>Total Current Savings</h3>
+    <div class="value" id="totalSavings">₱0.00</div>
+  </div>
+  <div class="card">
+    <h3>Total Monthly Net Interest</h3>
+    <div class="value" id="totalNetInterest">₱0.00</div>
+  </div>
+  <div class="card">
+    <h3>Total Monthly Gross Interest</h3>
+    <div class="value" id="totalGrossInterest">₱0.00</div>
+  </div>
+  <div class="card">
+    <h3>Total Monthly Tax</h3>
+    <div class="value" id="totalTax">₱0.00</div>
+  </div>
+</div>
 
-function peso(n){return '₱'+Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2})}
+<div class="section">
+  <h2>🏦 Add Savings Account / Cooperative</h2>
+  <div class="form-grid">
+    <input type="text" id="accountName" placeholder="Bank / Digital Bank / Cooperative Name">
+    <select id="accountType">
+      <option value="Traditional Bank">Traditional Bank</option>
+      <option value="Digital Bank">Digital Bank</option>
+      <option value="E-Wallet">E-Wallet</option>
+      <option value="Cooperative">Cooperative</option>
+    </select>
+    <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01">
+    <select id="interestMethod">
+      <option value="ADB">ADB</option>
+      <option value="Running Balance">Running Balance</option>
+    </select>
+  </div>
+  <label class="inline-label"><input type="checkbox" id="isTaxFree"> Tax-free / Cooperative</label>
+  <div class="btn-row">
+    <button onclick="addAccount()" id="addAccountBtn">Add Account</button>
+    <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
+    <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+  </div>
+  <p class="muted">Use ADB if gusto mo average daily balance basis. Use Running Balance if gusto mo current ending balance basis.</p>
+</div>
 
-function add(){
-let name=document.getElementById('name').value;
-let type=document.getElementById('type').value;
-let amount=parseFloat(document.getElementById('amount').value);
-let rate=parseFloat(document.getElementById('rate').value);
-let isCoop=document.getElementById('isCoop').checked;
+<div class="section">
+  <h2>➕ Add Transaction</h2>
+  <div class="form-grid">
+    <select id="transactionAccount"></select>
+    <input type="date" id="transactionDate">
+    <select id="transactionType">
+      <option value="Deposit">Deposit</option>
+      <option value="Withdrawal">Withdrawal</option>
+    </select>
+    <input type="number" id="transactionAmount" placeholder="Amount" min="0" step="0.01">
+    <input type="text" id="transactionNote" placeholder="Note">
+  </div>
+  <div class="btn-row">
+    <button onclick="addTransaction()" id="addTransactionBtn">Add Transaction</button>
+    <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
+    <button onclick="cancelTransactionEdit()" id="cancelTransactionEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+  </div>
+  <p class="muted">Yes, may withdrawal portion na. Auto-updated ang running balance ng bawat transaction.</p>
+</div>
 
-if(!name||isNaN(amount)||isNaN(rate))return alert('Complete fields');
+<div class="section">
+  <h2>📊 Account Summary</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Type</th>
+          <th>Method</th>
+          <th>Current Balance</th>
+          <th>ADB</th>
+          <th>Rate</th>
+          <th>Gross / Month</th>
+          <th>Tax</th>
+          <th>Net / Month</th>
+          <th>Note</th>
+          <th>Action</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="accountsTableBody"></tbody>
+    </table>
+  </div>
+</div>
 
-let prevBalance=data.length?data[data.length-1].balance:0;
-let balance= type==='deposit'? prevBalance+amount : prevBalance-amount;
+<div class="section">
+  <h2>🧾 Transactions</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Account</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Running Balance</th>
+          <th>Note</th>
+          <th>Action</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="transactionsTableBody"></tbody>
+    </table>
+  </div>
+  <div class="btn-row">
+    <button class="danger-btn" onclick="clearTransactions()">Clear All Transactions</button>
+    <button class="secondary-btn" onclick="exportData()">Export Backup (JSON)</button>
+  </div>
+</div>
 
-// ADB (simple avg of balances)
-let totalBal=data.reduce((s,d)=>s+d.balance,0)+balance;
-let adb= totalBal/(data.length+1);
+  </div>  <script>
+    let accounts = JSON.parse(localStorage.getItem('ft_accounts')) || [];
+    let transactions = JSON.parse(localStorage.getItem('ft_transactions')) || [];
+    let editingAccountId = null;
+    let editingTransactionId = null;
 
-let gross=adb*(rate/100/12);
-let tax=isCoop?0:gross*0.20;
-let net=gross-tax;
+    function peso(value) {
+      return new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP'
+      }).format(Number(value) || 0);
+    }
 
-data.push({name,type,amount,balance,adb,gross,tax,net,isCoop});
-localStorage.setItem('data',JSON.stringify(data));
-render();
-}
+    function saveData() {
+      localStorage.setItem('ft_accounts', JSON.stringify(accounts));
+      localStorage.setItem('ft_transactions', JSON.stringify(transactions));
+    }
 
-function render(){
-let tbody=document.getElementById('table');
-tbody.innerHTML='';
-let total=0,interest=0;
+    function todayString() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
 
-data.forEach(d=>{
- total=d.balance;
- interest+=d.net;
- tbody.innerHTML+=`<tr>
- <td>${d.name}</td>
- <td>${d.type}</td>
- <td>${peso(d.amount)}</td>
- <td>${peso(d.balance)}</td>
- <td>${peso(d.adb)}</td>
- <td>${peso(d.gross)}</td>
- <td>${peso(d.tax)}</td>
- <td>${peso(d.net)}</td>
- </tr>`;
-});
+    function addAccount() {
+      const accountName = document.getElementById('accountName').value.trim();
+      const accountType = document.getElementById('accountType').value;
+      const annualRate = parseFloat(document.getElementById('annualRate').value);
+      const interestMethod = document.getElementById('interestMethod').value;
+      const isTaxFree = document.getElementById('isTaxFree').checked || accountType === 'Cooperative';
 
-document.getElementById('total').innerText=peso(total);
-document.getElementById('adb').innerText=peso(data.length?data[data.length-1].adb:0);
-document.getElementById('interest').innerText=peso(interest);
-}
+      if (!accountName || isNaN(annualRate)) {
+        alert('Please complete account details.');
+        return;
+      }
 
-function addInv(){
-let name=document.getElementById('invName').value;
-let type=document.getElementById('invType').value;
-let capital=parseFloat(document.getElementById('capital').value);
-let value=parseFloat(document.getElementById('value').value);
+      accounts.push({
+        id: Date.now(),
+        accountName,
+        accountType,
+        annualRate,
+        interestMethod,
+        isTaxFree
+      });
 
-let gain=value-capital;
+      clearAccountForm();
+      saveData();
+      renderAll();
+    }
 
-inv.push({name,type,capital,value,gain});
-localStorage.setItem('inv',JSON.stringify(inv));
-renderInv();
-}
+    function editAccount(accountId) {
+      const account = accounts.find(a => a.id === accountId);
+      if (!account) return;
+      editingAccountId = accountId;
+      document.getElementById('accountName').value = account.accountName;
+      document.getElementById('accountType').value = account.accountType;
+      document.getElementById('annualRate').value = account.annualRate;
+      document.getElementById('interestMethod').value = account.interestMethod;
+      document.getElementById('isTaxFree').checked = account.isTaxFree;
+      document.getElementById('addAccountBtn').style.display = 'none';
+      document.getElementById('updateAccountBtn').style.display = 'block';
+      document.getElementById('cancelAccountEditBtn').style.display = 'block';
+    }
 
-function renderInv(){
-let t=document.getElementById('invTable');
-t.innerHTML='';
-inv.forEach(i=>{
- t.innerHTML+=`<tr>
- <td>${i.name}</td>
- <td>${i.type}</td>
- <td>${peso(i.capital)}</td>
- <td>${peso(i.value)}</td>
- <td>${peso(i.gain)}</td>
- </tr>`;
-});
-}
+    function updateAccount() {
+      const account = accounts.find(a => a.id === editingAccountId);
+      if (!account) return;
+      const accountName = document.getElementById('accountName').value.trim();
+      const accountType = document.getElementById('accountType').value;
+      const annualRate = parseFloat(document.getElementById('annualRate').value);
+      const interestMethod = document.getElementById('interestMethod').value;
+      const isTaxFree = document.getElementById('isTaxFree').checked || accountType === 'Cooperative';
 
-render();
-renderInv();
-</script></body>
+      if (!accountName || isNaN(annualRate)) {
+        alert('Please complete account details.');
+        return;
+      }
+
+      account.accountName = accountName;
+      account.accountType = accountType;
+      account.annualRate = annualRate;
+      account.interestMethod = interestMethod;
+      account.isTaxFree = isTaxFree;
+
+      cancelAccountEdit();
+      saveData();
+      renderAll();
+    }
+
+    function clearAccountForm() {
+      document.getElementById('accountName').value = '';
+      document.getElementById('annualRate').value = '';
+      document.getElementById('interestMethod').value = 'ADB';
+      document.getElementById('accountType').value = 'Traditional Bank';
+      document.getElementById('isTaxFree').checked = false;
+    }
+
+    function cancelAccountEdit() {
+      editingAccountId = null;
+      clearAccountForm();
+      document.getElementById('addAccountBtn').style.display = 'block';
+      document.getElementById('updateAccountBtn').style.display = 'none';
+      document.getElementById('cancelAccountEditBtn').style.display = 'none';
+    }
+
+    function addTransaction() {
+      const accountId = Number(document.getElementById('transactionAccount').value);
+      const transactionDate = document.getElementById('transactionDate').value;
+      const transactionType = document.getElementById('transactionType').value;
+      const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
+      const transactionNote = document.getElementById('transactionNote').value.trim();
+
+      if (!accountId || !transactionDate || isNaN(transactionAmount) || transactionAmount <= 0) {
+        alert('Please complete transaction details.');
+        return;
+      }
+
+      transactions.push({
+        id: Date.now(),
+        accountId,
+        transactionDate,
+        transactionType,
+        transactionAmount,
+        transactionNote
+      });
+
+      clearTransactionForm();
+      saveData();
+      renderAll();
+    }
+
+    function editTransaction(transactionId) {
+      const transaction = transactions.find(t => t.id === transactionId);
+      if (!transaction) return;
+      editingTransactionId = transactionId;
+      document.getElementById('transactionAccount').value = transaction.accountId;
+      document.getElementById('transactionDate').value = transaction.transactionDate;
+      document.getElementById('transactionType').value = transaction.transactionType;
+      document.getElementById('transactionAmount').value = transaction.transactionAmount;
+      document.getElementById('transactionNote').value = transaction.transactionNote || '';
+      document.getElementById('addTransactionBtn').style.display = 'none';
+      document.getElementById('updateTransactionBtn').style.display = 'block';
+      document.getElementById('cancelTransactionEditBtn').style.display = 'block';
+    }
+
+    function updateTransaction() {
+      const transaction = transactions.find(t => t.id === editingTransactionId);
+      if (!transaction) return;
+      const accountId = Number(document.getElementById('transactionAccount').value);
+      const transactionDate = document.getElementById('transactionDate').value;
+      const transactionType = document.getElementById('transactionType').value;
+      const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
+      const transactionNote = document.getElementById('transactionNote').value.trim();
+
+      if (!accountId || !transactionDate || isNaN(transactionAmount) || transactionAmount <= 0) {
+        alert('Please complete transaction details.');
+        return;
+      }
+
+      transaction.accountId = accountId;
+      transaction.transactionDate = transactionDate;
+      transaction.transactionType = transactionType;
+      transaction.transactionAmount = transactionAmount;
+      transaction.transactionNote = transactionNote;
+
+      cancelTransactionEdit();
+      saveData();
+      renderAll();
+    }
+
+    function clearTransactionForm() {
+      document.getElementById('transactionAmount').value = '';
+      document.getElementById('transactionNote').value = '';
+      document.getElementById('transactionType').value = 'Deposit';
+      if (!document.getElementById('transactionDate').value) {
+        document.getElementById('transactionDate').value = todayString();
+      }
+    }
+
+    function cancelTransactionEdit() {
+      editingTransactionId = null;
+      clearTransactionForm();
+      document.getElementById('addTransactionBtn').style.display = 'block';
+      document.getElementById('updateTransactionBtn').style.display = 'none';
+      document.getElementById('cancelTransactionEditBtn').style.display = 'none';
+    }
+
+    function getAccountTransactions(accountId) {
+      return transactions
+        .filter(t => t.accountId === accountId)
+        .sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
+    }
+
+    function computeRunningBalances(accountId) {
+      let balance = 0;
+      return getAccountTransactions(accountId).map(t => {
+        balance += t.transactionType === 'Deposit' ? t.transactionAmount : -t.transactionAmount;
+        return { ...t, runningBalance: balance };
+      });
+    }
+
+    function getCurrentBalance(accountId) {
+      const rows = computeRunningBalances(accountId);
+      return rows.length ? rows[rows.length - 1].runningBalance : 0;
+    }
+
+    function getADB(accountId) {
+      const rows = getAccountTransactions(accountId);
+      if (!rows.length) return 0;
+
+      const sorted = [...rows].sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
+      const month = new Date(sorted[0].transactionDate).getMonth();
+      const year = new Date(sorted[0].transactionDate).getFullYear();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      let dailyBalances = new Array(daysInMonth).fill(0);
+      let balance = 0;
+      let pointer = 0;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        while (pointer < sorted.length && sorted[pointer].transactionDate <= dateStr) {
+          balance += sorted[pointer].transactionType === 'Deposit' ? sorted[pointer].transactionAmount : -sorted[pointer].transactionAmount;
+          pointer++;
+        }
+        dailyBalances[day - 1] = balance;
+      }
+
+      const total = dailyBalances.reduce((sum, b) => sum + b, 0);
+      return total / daysInMonth;
+    }
+
+    function computeInterest(account) {
+      const currentBalance = getCurrentBalance(account.id);
+      const adb = getADB(account.id);
+      const baseAmount = account.interestMethod === 'ADB' ? adb : currentBalance;
+      const gross = baseAmount * (account.annualRate / 100 / 12);
+      const tax = account.isTaxFree ? 0 : gross * 0.20;
+      const net = gross - tax;
+      return { currentBalance, adb, gross, tax, net };
+    }
+
+    function deleteAccount(accountId) {
+      accounts = accounts.filter(a => a.id !== accountId);
+      transactions = transactions.filter(t => t.accountId !== accountId);
+      saveData();
+      renderAll();
+    }
+
+    function deleteTransaction(transactionId) {
+      transactions = transactions.filter(t => t.id !== transactionId);
+      saveData();
+      renderAll();
+    }
+
+    function clearTransactions() {
+      if (!confirm('Clear all transactions?')) return;
+      transactions = [];
+      saveData();
+      renderAll();
+    }
+
+    function renderAccountOptions() {
+      const select = document.getElementById('transactionAccount');
+      select.innerHTML = '<option value="">Select Account</option>';
+      accounts.forEach(a => {
+        select.innerHTML += `<option value="${a.id}">${a.accountName}</option>`;
+      });
+    }
+
+    function renderAccountsTable() {
+      const tbody = document.getElementById('accountsTableBody');
+      tbody.innerHTML = '';
+
+      let totalSavings = 0;
+      let totalNetInterest = 0;
+      let totalGrossInterest = 0;
+      let totalTax = 0;
+
+      accounts.forEach(account => {
+        const result = computeInterest(account);
+        totalSavings += result.currentBalance;
+        totalNetInterest += result.net;
+        totalGrossInterest += result.gross;
+        totalTax += result.tax;
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${account.accountName}</td>
+            <td>${account.accountType}</td>
+            <td>${account.interestMethod}</td>
+            <td>${peso(result.currentBalance)}</td>
+            <td>${peso(result.adb)}</td>
+            <td>${Number(account.annualRate).toFixed(2)}%</td>
+            <td class="positive">${peso(result.gross)}</td>
+            <td>${peso(result.tax)}</td>
+            <td class="positive">${peso(result.net)}</td>
+            <td>${account.isTaxFree ? 'Tax-free cooperative' : '20% tax applied'}</td>
+            <td><button class="danger-btn" onclick="deleteAccount(${account.id})">Delete</button></td>
+            <td><button class="secondary-btn" onclick="editAccount(${account.id})">Edit</button></td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('totalSavings').textContent = peso(totalSavings);
+      document.getElementById('totalNetInterest').textContent = peso(totalNetInterest);
+      document.getElementById('totalGrossInterest').textContent = peso(totalGrossInterest);
+      document.getElementById('totalTax').textContent = peso(totalTax);
+    }
+
+    function renderTransactionsTable() {
+      const tbody = document.getElementById('transactionsTableBody');
+      tbody.innerHTML = '';
+
+      const accountMap = {};
+      accounts.forEach(a => accountMap[a.id] = a.accountName);
+
+      let computedRows = [];
+      accounts.forEach(account => {
+        const rows = computeRunningBalances(account.id).map(r => ({ ...r, accountName: account.accountName }));
+        computedRows = computedRows.concat(rows);
+      });
+
+      computedRows.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
+
+      computedRows.forEach(row => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${row.transactionDate}</td>
+            <td>${row.accountName || accountMap[row.accountId] || ''}</td>
+            <td class="${row.transactionType === 'Deposit' ? 'positive' : 'negative'}">${row.transactionType}</td>
+            <td>${peso(row.transactionAmount)}</td>
+            <td>${peso(row.runningBalance)}</td>
+            <td>${row.transactionNote || '-'}</td>
+            <td><button class="danger-btn" onclick="deleteTransaction(${row.id})">Delete</button></td>
+            <td><button class="secondary-btn" onclick="editTransaction(${row.id})">Edit</button></td>
+          </tr>
+        `;
+      });
+    }
+
+    function exportData() {
+      const data = { accounts, transactions, exportedAt: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'financial-tracker-adb-backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderAll() {
+      renderAccountOptions();
+      renderAccountsTable();
+      renderTransactionsTable();
+      if (!document.getElementById('transactionDate').value) {
+        document.getElementById('transactionDate').value = todayString();
+      }
+    }
+
+    renderAll();
+  </script></body>
 </html>
