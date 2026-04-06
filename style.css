@@ -1,21 +1,27 @@
 .brand-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
+  padding-top: 6px;
 }
 
 .brand-header h1 {
+  color: #2e7d32;
   margin-bottom: 4px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-.brand-header .subtitle {
-  margin-bottom: 4px;
+.subtitle {
   color: #666;
+  margin-bottom: 4px;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .brand-tagline {
-  color: #777;
-  font-size: 13px;
-  letter-spacing: 1px;
+  color: #8a8a8a;
+  font-size: 12px;
+  letter-spacing: 2px;
   margin-bottom: 0;
 }
