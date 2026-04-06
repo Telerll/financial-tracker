@@ -16,22 +16,34 @@ body {
   margin: auto;
 }
 
+/* HEADER */
 .brand-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e5e7eb;
+  overflow: hidden;
 }
 
+.brand-logo {
+  height: 60px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+}
+
+/* DASHBOARD */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 12px;
   margin-bottom: 18px;
 }
 
+/* CARDS */
 .card,
 .section {
   background: white;
@@ -53,6 +65,7 @@ body {
   font-weight: bold;
 }
 
+/* FORM */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -86,6 +99,7 @@ button {
   background: #c62828;
 }
 
+/* TEXT */
 .muted {
   color: #666;
   font-size: 13px;
@@ -93,6 +107,7 @@ button {
   line-height: 1.5;
 }
 
+/* TABLE */
 .table-wrap {
   overflow-x: auto;
   margin-top: 12px;
@@ -118,6 +133,7 @@ th {
   color: #1b5e20;
 }
 
+/* COLORS */
 .positive {
   color: #2e7d32;
   font-weight: bold;
@@ -128,6 +144,7 @@ th {
   font-weight: bold;
 }
 
+/* BUTTON GRID */
 .btn-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -135,6 +152,7 @@ th {
   margin-top: 10px;
 }
 
+/* LABEL */
 .pill {
   display: inline-block;
   padding: 4px 8px;
@@ -144,6 +162,13 @@ th {
   color: #1b5e20;
 }
 
+/* IMG FIX */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .dashboard {
     grid-template-columns: repeat(3, 1fr);
@@ -157,7 +182,11 @@ th {
 
   .dashboard {
     grid-template-columns: repeat(2, 1fr);
-   }
+  }
+
+  .brand-logo {
+    height: 52px;
+  }
 
   .value {
     font-size: 18px;
@@ -173,27 +202,8 @@ th {
   .dashboard {
     grid-template-columns: 1fr;
   }
-}
-.brand-logo {
-  height: 70px !important;
-  width: auto !important;
-  max-width: 100% !important;
-  object-fit: contain;
-  display: block;
-}
-img {
-  max-width: 100%;
-  height: auto;
-}
-.brand-logo {
-  height: 70px;
-  width: auto;
-  display: block;
 
-  transform: scale(1.4);   /* zoom in */
-  object-fit: cover;
-}
-.brand-header {
-  height: 80px;
-  overflow: hidden;
+  .brand-logo {
+    height: 46px;
+  }
 }
