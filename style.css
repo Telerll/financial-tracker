@@ -25,12 +25,6 @@ body {
   border-bottom: 1px solid #e5e7eb;
 }
 
-.brand-logo {
-  width: 160px;
-  height: auto;
-  display: block;
-}
-
 .dashboard {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -163,11 +157,7 @@ th {
 
   .dashboard {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .brand-logo {
-    width: 130px;
-  }
+   }
 
   .value {
     font-size: 18px;
