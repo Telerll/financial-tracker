@@ -188,3 +188,9 @@ th {
     width: 115px;
   }
 }
+.brand-logo {
+  height: 70px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain;
+}
