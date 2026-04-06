@@ -194,3 +194,7 @@ th {
   max-width: 100% !important;
   object-fit: contain;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
