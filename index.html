@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SUBI PH</title>
+  <title>SUBI PH Financial Tracker</title>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: Arial, sans-serif;
       background: #f4f8f3;
       color: #1f2937;
-      padding: 14px;
+      padding: 16px;
     }
 
     .container {
@@ -20,55 +25,48 @@
     }
 
     .brand-header {
-      text-align: center;
-      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      overflow: hidden;
     }
 
-    .brand-header h1 {
-      color: #2e7d32;
-      margin: 0 0 4px 0;
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #666;
-      margin: 0 0 4px 0;
-      font-size: 14px;
-    }
-
-    .brand-tagline {
-      text-align: center;
-      color: #888;
-      font-size: 12px;
-      letter-spacing: 2px;
-      margin: 0;
+    .brand-logo {
+      height: 60px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      max-width: 100%;
     }
 
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 12px;
       margin-bottom: 18px;
     }
 
-    .card, .section {
+    .card,
+    .section {
       background: white;
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
       margin-bottom: 16px;
     }
 
-    .card h3, .section h2 {
+    .card h3,
+    .section h2 {
       color: #2e7d32;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
     .value {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
     }
 
@@ -79,11 +77,13 @@
       margin-bottom: 12px;
     }
 
-    input, select, button {
+    input,
+    select,
+    button {
       width: 100%;
-      padding: 11px;
+      padding: 10px;
       border: 1px solid #cfd8dc;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 14px;
     }
 
@@ -95,8 +95,13 @@
       cursor: pointer;
     }
 
-    .secondary-btn { background: #607d8b; }
-    .danger-btn { background: #c62828; }
+    .secondary-btn {
+      background: #607d8b;
+    }
+
+    .danger-btn {
+      background: #c62828;
+    }
 
     .muted {
       color: #666;
@@ -116,11 +121,12 @@
       min-width: 1100px;
     }
 
-    th, td {
+    th,
+    td {
       padding: 10px;
       border-bottom: 1px solid #e0e0e0;
       text-align: left;
-      font-size: 14px;
+      font-size: 13px;
       vertical-align: top;
     }
 
@@ -129,8 +135,15 @@
       color: #1b5e20;
     }
 
-    .positive { color: #2e7d32; font-weight: bold; }
-    .negative { color: #c62828; font-weight: bold; }
+    .positive {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .negative {
+      color: #c62828;
+      font-weight: bold;
+    }
 
     .btn-row {
       display: grid;
@@ -148,46 +161,84 @@
       color: #1b5e20;
     }
 
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     @media (max-width: 768px) {
-      body { padding: 12px; }
-      .card, .section { padding: 14px; }
-      .value { font-size: 20px; }
+      body {
+        padding: 12px;
+      }
+
+      .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .brand-logo {
+        height: 52px;
+      }
+
+      .value {
+        font-size: 18px;
+      }
+
+      .card,
+      .section {
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-logo {
+        height: 46px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
 
-<div class="brand-header">
-  <img src="logo.png" class="brand-logo" alt="SUBI PH Logo">
-</div
+    <div class="brand-header">
+      <img src="logo.png" class="brand-logo" alt="SUBI PH Logo">
+    </div>
 
-<div class="dashboard">
-  <div class="card">
-    <h3>Total Savings</h3>
-    <div class="value" id="dashSavings">₱0.00</div>
-  </div>
+    <div class="dashboard">
+      <div class="card">
+        <h3>Total Savings</h3>
+        <div class="value" id="dashSavings">₱0.00</div>
+      </div>
 
-  <div class="card">
-    <h3>Total Accrued / Credited Interest</h3>
-    <div class="value" id="dashInterest">₱0.00</div>
-  </div>
+      <div class="card">
+        <h3>Total Accrued / Credited Interest</h3>
+        <div class="value" id="dashInterest">₱0.00</div>
+      </div>
 
-  <div class="card">
-    <h3>MP2 + Coop Value</h3>
-    <div class="value" id="dashDividends">₱0.00</div>
-  </div>
+      <div class="card">
+        <h3>MP2 + Coop Value</h3>
+        <div class="value" id="dashDividends">₱0.00</div>
+      </div>
 
-  <div class="card">
-    <h3>Other Investments Value</h3>
-    <div class="value" id="dashInvestments">₱0.00</div>
-  </div>
+      <div class="card">
+        <h3>Other Investments Value</h3>
+        <div class="value" id="dashInvestments">₱0.00</div>
+      </div>
 
-  <div class="card">
-    <h3>Total Net Worth</h3>
-    <div class="value" id="dashNetWorth">₱0.00</div>
-  </div>
-</div>
+      <div class="card">
+        <h3>Total Net Worth</h3>
+        <div class="value" id="dashNetWorth">₱0.00</div>
+      </div>
+    </div>
 
     <div class="section">
       <h2>About SUBI</h2>
@@ -214,12 +265,18 @@
         <input type="number" id="beginningBalance" placeholder="Beginning Balance" min="0" step="0.01">
         <input type="date" id="beginningDate">
       </div>
+
       <div class="btn-row">
         <button onclick="addAccount()" id="addAccountBtn">Add Account</button>
         <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
         <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
       </div>
-      <p class="muted">Beginning balance and beginning date are required to support more accurate account-level calculations. Traditional banks typically use daily accrual with monthly crediting. Digital banks may use daily accrual with either daily or monthly crediting.</p>
+
+      <p class="muted">
+        Beginning balance and beginning date are required to support more accurate account-level calculations.
+        Traditional banks typically use daily accrual with monthly crediting.
+        Digital banks may use daily accrual with either daily or monthly crediting.
+      </p>
     </div>
 
     <div class="section">
@@ -234,6 +291,7 @@
         <input type="number" id="transactionAmount" placeholder="Amount" min="0" step="0.01">
         <input type="text" id="transactionNote" placeholder="Note">
       </div>
+
       <div class="btn-row">
         <button onclick="addTransaction()" id="addTransactionBtn">Add Transaction</button>
         <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
@@ -307,12 +365,18 @@
         <input type="number" id="divCurrent" placeholder="Current Value (optional)" min="0" step="0.01">
         <input type="text" id="divNote" placeholder="Note / Year">
       </div>
+
       <div class="btn-row">
         <button onclick="addDividendItem()" id="addDividendBtn">Add MP2 / Coop</button>
         <button onclick="updateDividendItem()" id="updateDividendBtn" class="secondary-btn" style="display:none;">Update MP2 / Coop</button>
         <button onclick="cancelDividendEdit()" id="cancelDividendBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
       </div>
-      <p class="muted">If Current Value is provided, it will be used in net worth. If it is left blank, the system will compute value from earned amounts or the declared rate.</p>
+
+      <p class="muted">
+        If Current Value is provided, it will be used in net worth.
+        If it is left blank, the system will compute value from earned amounts or the declared rate.
+      </p>
+
       <div class="table-wrap">
         <table>
           <thead>
@@ -351,11 +415,13 @@
         <input type="number" id="invValue" placeholder="Current Market Value" min="0" step="0.01">
         <input type="text" id="invNote" placeholder="Note">
       </div>
+
       <div class="btn-row">
         <button onclick="addInvestment()" id="addInvestmentBtn">Add Investment</button>
         <button onclick="updateInvestment()" id="updateInvestmentBtn" class="secondary-btn" style="display:none;">Update Investment</button>
         <button onclick="cancelInvestmentEdit()" id="cancelInvestmentBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
       </div>
+
       <div class="table-wrap">
         <table>
           <thead>
@@ -378,7 +444,9 @@
 
     <div class="section">
       <h2>Yearly Summary</h2>
-      <p class="muted">Annual summary of savings transactions, including deposits, withdrawals, estimated net interest, and ending balance.</p>
+      <p class="muted">
+        Annual summary of savings transactions, including deposits, withdrawals, estimated net interest, and ending balance.
+      </p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -401,7 +469,10 @@
         <button class="secondary-btn" onclick="exportData()">Export Backup (JSON)</button>
         <button class="danger-btn" onclick="resetAllData()">Reset All Data</button>
       </div>
-      <p class="muted">Data is stored only in this browser using localStorage. If you change devices or clear browser data, your records will be lost unless you export a backup first.</p>
+      <p class="muted">
+        Data is stored only in this browser using localStorage. If you change devices or clear browser data,
+        your records will be lost unless you export a backup first.
+      </p>
     </div>
 
   </div>
@@ -470,6 +541,7 @@
     function editAccount(accountId) {
       const account = accounts.find(a => a.id === accountId);
       if (!account) return;
+
       editingAccountId = accountId;
       document.getElementById('accountName').value = account.accountName;
       document.getElementById('accountType').value = account.accountType;
@@ -477,6 +549,7 @@
       document.getElementById('annualRate').value = account.annualRate;
       document.getElementById('beginningBalance').value = account.beginningBalance;
       document.getElementById('beginningDate').value = account.beginningDate;
+
       document.getElementById('addAccountBtn').style.display = 'none';
       document.getElementById('updateAccountBtn').style.display = 'block';
       document.getElementById('cancelAccountEditBtn').style.display = 'block';
@@ -556,12 +629,14 @@
     function editTransaction(transactionId) {
       const transaction = transactions.find(t => t.id === transactionId);
       if (!transaction) return;
+
       editingTransactionId = transactionId;
       document.getElementById('transactionAccount').value = transaction.accountId;
       document.getElementById('transactionDate').value = transaction.transactionDate;
       document.getElementById('transactionType').value = transaction.transactionType;
       document.getElementById('transactionAmount').value = transaction.transactionAmount;
       document.getElementById('transactionNote').value = transaction.transactionNote || '';
+
       document.getElementById('addTransactionBtn').style.display = 'none';
       document.getElementById('updateTransactionBtn').style.display = 'block';
       document.getElementById('cancelTransactionEditBtn').style.display = 'block';
@@ -594,6 +669,7 @@
     }
 
     function clearTransactionForm() {
+      document.getElementById('transactionAccount').value = '';
       document.getElementById('transactionType').value = 'Deposit';
       document.getElementById('transactionAmount').value = '';
       document.getElementById('transactionNote').value = '';
@@ -646,6 +722,7 @@
     function editDividendItem(id) {
       const item = dividendItems.find(d => d.id === id);
       if (!item) return;
+
       editingDividendId = id;
       document.getElementById('divName').value = item.divName;
       document.getElementById('divType').value = item.divType;
@@ -655,6 +732,7 @@
       document.getElementById('divEarned').value = item.divEarned ?? '';
       document.getElementById('divCurrent').value = item.divCurrent ?? '';
       document.getElementById('divNote').value = item.divNote || '';
+
       document.getElementById('addDividendBtn').style.display = 'none';
       document.getElementById('updateDividendBtn').style.display = 'block';
       document.getElementById('cancelDividendBtn').style.display = 'block';
@@ -740,12 +818,14 @@
     function editInvestment(id) {
       const item = investments.find(i => i.id === id);
       if (!item) return;
+
       editingInvestmentId = id;
       document.getElementById('invName').value = item.invName;
       document.getElementById('invType').value = item.invType;
       document.getElementById('invCapital').value = item.invCapital;
       document.getElementById('invValue').value = item.invValue;
       document.getElementById('invNote').value = item.invNote || '';
+
       document.getElementById('addInvestmentBtn').style.display = 'none';
       document.getElementById('updateInvestmentBtn').style.display = 'block';
       document.getElementById('cancelInvestmentBtn').style.display = 'block';
@@ -823,7 +903,7 @@
         .filter(t => t.accountId === account.id)
         .sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
 
-      let ledger = [{
+      const ledger = [{
         id: `begin-${account.id}`,
         transactionDate: account.beginningDate,
         transactionType: 'Beginning Balance',
@@ -858,7 +938,7 @@
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const dailyRate = account.annualRate / 100 / 365;
 
-      let dailyBalancesThisMonth = [];
+      const dailyBalancesThisMonth = [];
       let balance = account.beginningBalance;
       let txPointer = 0;
       const filteredLedger = ledger.filter(l => !l.isSystem);
@@ -873,38 +953,40 @@
         }
 
         while (txPointer < filteredLedger.length && filteredLedger[txPointer].transactionDate <= thisDateStr) {
-          balance += filteredLedger[txPointer].transactionType === 'Deposit' ? filteredLedger[txPointer].transactionAmount : -filteredLedger[txPointer].transactionAmount;
+          balance += filteredLedger[txPointer].transactionType === 'Deposit'
+            ? filteredLedger[txPointer].transactionAmount
+            : -filteredLedger[txPointer].transactionAmount;
           txPointer++;
         }
+
         dailyBalancesThisMonth.push(balance);
       }
 
-      const adb = dailyBalancesThisMonth.reduce((s, v) => s + v, 0) / daysInMonth;
       const dailyInterest = currentBalance * dailyRate;
       const monthlyGross = account.interestMode === 'simple'
         ? currentBalance * (account.annualRate / 100 / 12)
         : dailyBalancesThisMonth.reduce((s, b) => s + (b * dailyRate), 0);
+
       const monthlyTax = monthlyGross * 0.20;
       const monthlyNet = monthlyGross - monthlyTax;
 
       let accruedGross = 0;
       const todayDay = today.getDate();
+
       for (let i = 0; i < todayDay && i < dailyBalancesThisMonth.length; i++) {
         accruedGross += dailyBalancesThisMonth[i] * dailyRate;
       }
+
       const accruedTax = accruedGross * 0.20;
       const accruedNet = accruedGross - accruedTax;
 
       return {
         ledger,
         currentBalance,
-        adb,
         dailyInterest,
         monthlyGross,
         monthlyTax,
         monthlyNet,
-        accruedGross,
-        accruedTax,
         accruedNet
       };
     }
@@ -912,6 +994,7 @@
     function renderAccountOptions() {
       const select = document.getElementById('transactionAccount');
       select.innerHTML = '<option value="">Select Account</option>';
+
       accounts.forEach(a => {
         select.innerHTML += `<option value="${a.id}">${a.accountName}</option>`;
       });
@@ -929,13 +1012,11 @@
         totalSavings += m.currentBalance;
         totalInterest += account.interestMode === 'digital_daily' ? m.accruedNet : m.monthlyNet;
 
-        const modeLabel = account.interestMode === 'traditional'
-          ? 'Traditional'
-          : account.interestMode === 'digital_daily'
-            ? 'Digital Daily Credit'
-            : account.interestMode === 'digital_monthly'
-              ? 'Digital Monthly Credit'
-              : 'Simple Monthly';
+        const modeLabel =
+          account.interestMode === 'traditional' ? 'Traditional' :
+          account.interestMode === 'digital_daily' ? 'Digital Daily Credit' :
+          account.interestMode === 'digital_monthly' ? 'Digital Monthly Credit' :
+          'Simple Monthly';
 
         tbody.innerHTML += `
           <tr>
@@ -945,7 +1026,7 @@
             <td>${peso(account.beginningBalance)}</td>
             <td>${peso(m.currentBalance)}</td>
             <td>${Number(account.annualRate).toFixed(2)}%</td>
-            <td class="${m.dailyInterest >= 0 ? 'positive' : 'negative'}">${peso(m.dailyInterest)}</td>
+            <td class="positive">${peso(m.dailyInterest)}</td>
             <td>${peso(m.accruedNet)}</td>
             <td>${peso(m.monthlyGross)}</td>
             <td>${peso(m.monthlyTax)}</td>
@@ -993,8 +1074,14 @@
       let totalValue = 0;
 
       dividendItems.forEach(item => {
-        const earned = item.divEarned == null ? (item.divCapital * (item.divRate / 100)) : item.divEarned;
-        const currentValue = item.divCurrent != null ? item.divCurrent : item.divCapital + earned;
+        const earned = item.divEarned == null
+          ? (item.divCapital * (item.divRate / 100))
+          : item.divEarned;
+
+        const currentValue = item.divCurrent != null
+          ? item.divCurrent
+          : item.divCapital + earned;
+
         totalValue += currentValue;
 
         tbody.innerHTML += `
@@ -1046,15 +1133,19 @@
 
     function updateNetWorth() {
       const totalSavings = accounts.reduce((s, a) => s + computeSavingsMetrics(a).currentBalance, 0);
+
       const totalDividendValue = dividendItems.reduce((s, d) => {
         const earned = d.divCurrent != null && d.divCurrent !== ''
           ? (Number(d.divCurrent) - d.divCapital)
           : (d.divEarned == null ? (d.divCapital * (d.divRate / 100)) : d.divEarned);
+
         const total = d.divCurrent != null && d.divCurrent !== ''
           ? Number(d.divCurrent)
           : d.divCapital + earned;
+
         return s + total;
       }, 0);
+
       const totalInvestmentValue = investments.reduce((s, i) => s + i.invValue, 0);
 
       document.getElementById('dashNetWorth').textContent = peso(totalSavings + totalDividendValue + totalInvestmentValue);
@@ -1062,7 +1153,6 @@
 
     function renderYearlySummary() {
       const tbody = document.getElementById('yearlySummaryTableBody');
-      if (!tbody) return;
       tbody.innerHTML = '';
 
       const yearlyMap = {};
@@ -1073,6 +1163,7 @@
 
         ledger.forEach(row => {
           const year = String(row.transactionDate).slice(0, 4);
+
           if (!yearlyMap[year]) {
             yearlyMap[year] = {
               deposits: 0,
@@ -1082,13 +1173,19 @@
             };
           }
 
-          if (row.transactionType === 'Deposit') yearlyMap[year].deposits += row.transactionAmount;
-          if (row.transactionType === 'Withdrawal') yearlyMap[year].withdrawals += row.transactionAmount;
+          if (row.transactionType === 'Deposit') {
+            yearlyMap[year].deposits += row.transactionAmount;
+          }
+
+          if (row.transactionType === 'Withdrawal') {
+            yearlyMap[year].withdrawals += row.transactionAmount;
+          }
 
           yearlyMap[year].endingBalance = row.runningBalance;
         });
 
         const beginYear = String(account.beginningDate).slice(0, 4);
+
         if (!yearlyMap[beginYear]) {
           yearlyMap[beginYear] = {
             deposits: 0,
@@ -1099,6 +1196,7 @@
         }
 
         const thisYear = String(new Date().getFullYear());
+
         if (!yearlyMap[thisYear]) {
           yearlyMap[thisYear] = {
             deposits: 0,
@@ -1113,6 +1211,7 @@
       });
 
       const years = Object.keys(yearlyMap).sort();
+
       years.forEach(year => {
         tbody.innerHTML += `
           <tr>
