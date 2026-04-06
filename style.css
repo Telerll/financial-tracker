@@ -185,3 +185,15 @@ img {
   max-width: 100%;
   height: auto;
 }
+.brand-logo {
+  height: 70px;
+  width: auto;
+  display: block;
+
+  transform: scale(1.4);   /* zoom in */
+  object-fit: cover;
+}
+.brand-header {
+  height: 80px;
+  overflow: hidden;
+}
