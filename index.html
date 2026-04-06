@@ -1,1122 +1,195 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Financial Tracker</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f8f3;
-      color: #1f2937;
-      padding: 14px;
-    }
-    .container { max-width: 1200px; margin: auto; }
-    h1 {
-      text-align: center;
-      color: #2e7d32;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 18px;
-      font-size: 14px;
-    }
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .card, .section {
-      background: white;
-      border-radius: 16px;
-      padding: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom: 16px;
-    }
-    .card h3, .section h2 {
-      color: #2e7d32;
-      margin-bottom: 10px;
-    }
-    .value {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid #cfd8dc;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-    button {
-      background: #2e7d32;
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .secondary-btn { background: #607d8b; }
-    .danger-btn { background: #c62828; }
-    .muted {
-      color: #666;
-      font-size: 13px;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-    .table-wrap {
-      overflow-x: auto;
-      margin-top: 12px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 1100px;
-    }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #e0e0e0;
-      text-align: left;
-      font-size: 14px;
-      vertical-align: top;
-    }
-    th {
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
-    .positive { color: #2e7d32; font-weight: bold; }
-    .negative { color: #c62828; font-weight: bold; }
-    .inline-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      padding-top: 8px;
-      flex-wrap: wrap;
-    }
-    .inline-label input { width: auto; }
-    .btn-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .pill {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
-    @media (max-width: 768px) {
-      body { padding: 12px; }
-      .card, .section { padding: 14px; }
-      .value { font-size: 20px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUBI PH</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f8f3;
+  color:#1f2937;
+  padding:14px;
+}
+
+.container{max-width:1200px;margin:auto;}
+
+h1{text-align:center;color:#2e7d32;margin-bottom:5px;letter-spacing:1px;}
+.subtitle{text-align:center;color:#666;font-size:14px;margin-bottom:3px;}
+.tagline{text-align:center;color:#888;font-size:13px;letter-spacing:1px;margin-bottom:18px;}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;margin-bottom:18px;
+}
+
+.card,.section{
+  background:#fff;border-radius:16px;padding:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom:16px;
+}
+
+.card h3,.section h2{color:#2e7d32;margin-bottom:8px;}
+
+.value{font-size:22px;font-weight:bold;}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:10px;margin-bottom:12px;
+}
+
+input,select,button{
+  width:100%;padding:10px;
+  border:1px solid #ccc;border-radius:10px;font-size:14px;
+}
+
+button{
+  background:#2e7d32;color:#fff;font-weight:bold;border:none;
+}
+
+.secondary-btn{background:#607d8b;}
+.danger-btn{background:#c62828;}
+
+.table-wrap{overflow-x:auto;margin-top:10px;}
+
+table{width:100%;border-collapse:collapse;min-width:900px;}
+th,td{padding:10px;border-bottom:1px solid #eee;font-size:13px;}
+th{background:#e8f5e9;color:#1b5e20;}
+
+.positive{color:#2e7d32;font-weight:bold;}
+.negative{color:#c62828;font-weight:bold;}
+
+.btn-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Financial Tracker</h1>
-    <p class="subtitle">A personal finance dashboard for savings, interest tracking, MP2 and cooperative holdings, and investment monitoring.</p><div class="dashboard">
-  <div class="card">
-    <h3>Total Savings</h3>
-    <div class="value" id="dashSavings">₱0.00</div>
-  </div>
-  <div class="card">
-    <h3>Total Accrued / Credited Interest</h3>
-    <div class="value" id="dashInterest">₱0.00</div>
-  </div>
-  <div class="card">
-    <h3>MP2 + Coop Value</h3>
-    <div class="value" id="dashDividends">₱0.00</div>
-  </div>
-  <div class="card">
-    <h3>Other Investments Value</h3>
-    <div class="value" id="dashInvestments">₱0.00</div>
-  </div>
-  <div class="card">
-    <h3>Total Net Worth</h3>
-    <div class="value" id="dashNetWorth">₱0.00</div>
-  </div>
+<div class="container">
+
+<h1>SUBI PH</h1>
+<p class="subtitle">FINANCIAL TRACKER</p>
+<p class="tagline">SAVE • GROW • TRACK</p>
+
+<div class="dashboard">
+<div class="card"><h3>Total Savings</h3><div class="value" id="dashSavings">₱0.00</div></div>
+<div class="card"><h3>Total Interest</h3><div class="value" id="dashInterest">₱0.00</div></div>
+<div class="card"><h3>MP2 + Coop</h3><div class="value" id="dashDividends">₱0.00</div></div>
+<div class="card"><h3>Investments</h3><div class="value" id="dashInvestments">₱0.00</div></div>
+<div class="card"><h3>Net Worth</h3><div class="value" id="dashNetWorth">₱0.00</div></div>
 </div>
 
 <div class="section">
-  <h2>Add Savings Account</h2>
-  <div class="form-grid">
-    <input type="text" id="accountName" placeholder="Account Name">
-    <select id="accountType">
-      <option value="Traditional Bank">Traditional Bank</option>
-      <option value="Digital Bank">Digital Bank</option>
-      <option value="E-Wallet">E-Wallet</option>
-    </select>
-    <select id="interestMode">
-      <option value="traditional">Traditional Bank (Daily Accrual, Monthly Credit)</option>
-      <option value="digital_daily">Digital Bank (Daily Accrual, Daily Credit)</option>
-      <option value="digital_monthly">Digital Bank (Daily Accrual, Monthly Credit)</option>
-      <option value="simple">Simple Monthly Projection</option>
-    </select>
-    <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01">
-    <input type="number" id="beginningBalance" placeholder="Beginning Balance" min="0" step="0.01">
-    <input type="date" id="beginningDate">
-  </div>
-  <div class="btn-row">
-    <button onclick="addAccount()" id="addAccountBtn">Add Account</button>
-    <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
-    <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
-  </div>
-  <p class="muted">Beginning balance and beginning date are required to support more accurate account-level calculations. Traditional banks typically use daily accrual with monthly crediting. Digital banks may use daily accrual with either daily or monthly crediting.</p>
+<h2>About SUBI</h2>
+<p>SUBI means “to save,” from Pagsusubi — setting aside money for the future.</p>
+<p>SUBI PH helps you track savings and investments for better financial management.</p>
 </div>
 
 <div class="section">
-  <h2>Add Savings Transaction</h2>
-  <div class="form-grid">
-    <select id="transactionAccount"></select>
-    <input type="date" id="transactionDate">
-    <select id="transactionType">
-      <option value="Deposit">Deposit</option>
-      <option value="Withdrawal">Withdrawal</option>
-    </select>
-    <input type="number" id="transactionAmount" placeholder="Amount" min="0" step="0.01">
-    <input type="text" id="transactionNote" placeholder="Note">
-  </div>
-  <div class="btn-row">
-    <button onclick="addTransaction()" id="addTransactionBtn">Add Transaction</button>
-    <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
-    <button onclick="cancelTransactionEdit()" id="cancelTransactionEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
-  </div>
+<h2>Add Savings Account</h2>
+<div class="form-grid">
+<input id="accountName" placeholder="Account Name">
+<input id="annualRate" type="number" placeholder="Interest %">
+<input id="beginningBalance" type="number" placeholder="Beginning Balance">
+</div>
+<button onclick="addAccount()">Add Account</button>
 </div>
 
 <div class="section">
-  <h2>Savings Account Summary</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Account</th>
-          <th>Type</th>
-          <th>Mode</th>
-          <th>Beginning Balance</th>
-          <th>Current Balance</th>
-          <th>Rate</th>
-          <th>Daily Interest</th>
-          <th>Accrued / MTD</th>
-          <th>Monthly Gross</th>
-          <th>Monthly Tax</th>
-          <th>Monthly Net</th>
-          <th>Action</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody id="accountsTableBody"></tbody>
-    </table>
-  </div>
+<h2>Add Transaction</h2>
+<div class="form-grid">
+<select id="transactionAccount"></select>
+<select id="transactionType">
+<option>Deposit</option>
+<option>Withdrawal</option>
+</select>
+<input id="transactionAmount" type="number" placeholder="Amount">
+</div>
+<button onclick="addTransaction()">Add Transaction</button>
 </div>
 
 <div class="section">
-  <h2>Savings Transactions</h2>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Account</th>
-          <th>Type</th>
-          <th>Amount</th>
-          <th>Running Balance</th>
-          <th>Note</th>
-          <th>Action</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody id="transactionsTableBody"></tbody>
-    </table>
-  </div>
+<h2>Accounts</h2>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Name</th><th>Balance</th><th>Interest</th></tr></thead>
+<tbody id="accountsTableBody"></tbody>
+</table>
+</div>
 </div>
 
-<div class="section">
-  <h2>MP2 / Cooperative (Tax-Free)</h2>
-  <div class="form-grid">
-    <input type="text" id="divName" placeholder="MP2 / Cooperative Name">
-    <select id="divType">
-      <option value="MP2">MP2</option>
-      <option value="Cooperative">Cooperative</option>
-    </select>
-    <select id="divStatus">
-      <option value="waiting">Waiting for Declaration</option>
-      <option value="declared">Declared</option>
-      <option value="credited">Credited</option>
-    </select>
-    <input type="number" id="divCapital" placeholder="Capital / Principal" min="0" step="0.01">
-    <input type="number" id="divRate" placeholder="Declared Rate (%)" min="0" step="0.01">
-    <input type="number" id="divEarned" placeholder="Actual Earned (optional)" min="0" step="0.01">
-    <input type="number" id="divCurrent" placeholder="Current Value (optional)" min="0" step="0.01">
-    <input type="text" id="divNote" placeholder="Note / Year">
-  </div>
-  <div class="btn-row">
-    <button onclick="addDividendItem()">Add MP2 / Coop</button>
-  </div>
-  <p class="muted">If Current Value is provided, it will be used in net worth. If it is left blank, the system will compute value from earned amounts or the declared rate.</p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Capital</th>
-          <th>Rate</th>
-          <th>Earned</th>
-          <th>Current Value</th>
-          <th>Note</th>
-        </tr>
-      </thead>
-      <tbody id="dividendTableBody"></tbody>
-    </table>
-  </div>
-    </table>
-  </div>
 </div>
 
-<div class="section">
-  <h2>Other Investments</h2>
-  <div class="form-grid">
-    <input type="text" id="invName" placeholder="Investment Name">
-    <select id="invType">
-      <option value="Stocks">Stocks</option>
-      <option value="Mutual Fund">Mutual Fund</option>
-      <option value="REIT">REIT</option>
-      <option value="UITF">UITF</option>
-      <option value="Crypto">Crypto</option>
-      <option value="Business">Business</option>
-      <option value="Other">Other</option>
-    </select>
-    <input type="number" id="invCapital" placeholder="Capital / Amount Invested" min="0" step="0.01">
-    <input type="number" id="invValue" placeholder="Current Market Value" min="0" step="0.01">
-    <input type="text" id="invNote" placeholder="Note">
-  </div>
-  <div class="btn-row">
-    <button onclick="addInvestment()" id="addInvestmentBtn">Add Investment</button>
-    <button onclick="updateInvestment()" id="updateInvestmentBtn" class="secondary-btn" style="display:none;">Update Investment</button>
-    <button onclick="cancelInvestmentEdit()" id="cancelInvestmentBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Capital</th>
-          <th>Current Value</th>
-          <th>Gain / Loss</th>
-          <th>% Growth</th>
-          <th>Note</th>
-          <th>Action</th>
-          <th>Edit</th>
-        </tr>
-      </thead>
-      <tbody id="investmentTableBody"></tbody>
-    </table>
-  </div>
-</div>
-
-<div class="section">
-  <h2>Yearly Summary</h2>
-  <p class="muted">Annual summary of savings transactions, including deposits, withdrawals, estimated net interest, and ending balance.</p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Year</th>
-          <th>Total Deposits</th>
-          <th>Total Withdrawals</th>
-          <th>Estimated Net Interest</th>
-          <th>Ending Balance</th>
-        </tr>
-      </thead>
-      <tbody id="yearlySummaryTableBody"></tbody>
-    </table>
-  </div>
-</div>
-
-<div class="section">
-  <h2>Backup / Reset</h2>
-  <div class="btn-row">
-    <button class="secondary-btn" onclick="exportData()">Export Backup (JSON)</button>
-    <button class="danger-btn" onclick="resetAllData()">Reset All Data</button>
-  </div>
-  <p class="muted">Data is stored only in this browser using localStorage. If you change devices or clear browser data, your records will be lost unless you export a backup first.</p>
-</div>
-
-  </div>  <script>
-    let accounts = JSON.parse(localStorage.getItem('full_ft_accounts')) || [];
-    let transactions = JSON.parse(localStorage.getItem('full_ft_transactions')) || [];
-    let dividendItems = JSON.parse(localStorage.getItem('full_ft_dividends')) || [];
-    let investments = JSON.parse(localStorage.getItem('full_ft_investments')) || [];
-
-    let editingAccountId = null;
-    let editingTransactionId = null;
-    let editingDividendId = null;
-    let editingInvestmentId = null;
-
-    function peso(value) {
-      return new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP'
-      }).format(Number(value) || 0);
-    }
-
-    function todayString() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
-
-    function saveData() {
-      localStorage.setItem('full_ft_accounts', JSON.stringify(accounts));
-      localStorage.setItem('full_ft_transactions', JSON.stringify(transactions));
-      localStorage.setItem('full_ft_dividends', JSON.stringify(dividendItems));
-      localStorage.setItem('full_ft_investments', JSON.stringify(investments));
-    }
-
-    function addAccount() {
-      const accountName = document.getElementById('accountName').value.trim();
-      const accountType = document.getElementById('accountType').value;
-      const interestMode = document.getElementById('interestMode').value;
-      const annualRate = parseFloat(document.getElementById('annualRate').value);
-      const beginningBalance = parseFloat(document.getElementById('beginningBalance').value);
-      const beginningDate = document.getElementById('beginningDate').value;
-
-      if (!accountName || isNaN(annualRate) || isNaN(beginningBalance) || !beginningDate) {
-        alert('Please complete savings account details including beginning balance and beginning date.');
-        return;
-      }
-
-      accounts.push({
-        id: Date.now(),
-        accountName,
-        accountType,
-        interestMode,
-        annualRate,
-        beginningBalance,
-        beginningDate
-      });
-
-      clearAccountForm();
-      saveData();
-      renderAll();
-    }
-
-    function editAccount(accountId) {
-      const account = accounts.find(a => a.id === accountId);
-      if (!account) return;
-      editingAccountId = accountId;
-      document.getElementById('accountName').value = account.accountName;
-      document.getElementById('accountType').value = account.accountType;
-      document.getElementById('interestMode').value = account.interestMode;
-      document.getElementById('annualRate').value = account.annualRate;
-      document.getElementById('beginningBalance').value = account.beginningBalance;
-      document.getElementById('beginningDate').value = account.beginningDate;
-      document.getElementById('addAccountBtn').style.display = 'none';
-      document.getElementById('updateAccountBtn').style.display = 'block';
-      document.getElementById('cancelAccountEditBtn').style.display = 'block';
-    }
-
-    function updateAccount() {
-      const account = accounts.find(a => a.id === editingAccountId);
-      if (!account) return;
-
-      const accountName = document.getElementById('accountName').value.trim();
-      const accountType = document.getElementById('accountType').value;
-      const interestMode = document.getElementById('interestMode').value;
-      const annualRate = parseFloat(document.getElementById('annualRate').value);
-      const beginningBalance = parseFloat(document.getElementById('beginningBalance').value);
-      const beginningDate = document.getElementById('beginningDate').value;
-
-      if (!accountName || isNaN(annualRate) || isNaN(beginningBalance) || !beginningDate) {
-        alert('Please complete savings account details including beginning balance and beginning date.');
-        return;
-      }
-
-      account.accountName = accountName;
-      account.accountType = accountType;
-      account.interestMode = interestMode;
-      account.annualRate = annualRate;
-      account.beginningBalance = beginningBalance;
-      account.beginningDate = beginningDate;
-
-      cancelAccountEdit();
-      saveData();
-      renderAll();
-    }
-
-    function clearAccountForm() {
-      document.getElementById('accountName').value = '';
-      document.getElementById('accountType').value = 'Traditional Bank';
-      document.getElementById('interestMode').value = 'traditional';
-      document.getElementById('annualRate').value = '';
-      document.getElementById('beginningBalance').value = '';
-      document.getElementById('beginningDate').value = todayString();
-    }
-
-    function cancelAccountEdit() {
-      editingAccountId = null;
-      clearAccountForm();
-      document.getElementById('addAccountBtn').style.display = 'block';
-      document.getElementById('updateAccountBtn').style.display = 'none';
-      document.getElementById('cancelAccountEditBtn').style.display = 'none';
-    }
-
-    function addTransaction() {
-      const accountId = Number(document.getElementById('transactionAccount').value);
-      const transactionDate = document.getElementById('transactionDate').value;
-      const transactionType = document.getElementById('transactionType').value;
-      const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
-      const transactionNote = document.getElementById('transactionNote').value.trim();
-
-      if (!accountId || !transactionDate || isNaN(transactionAmount) || transactionAmount <= 0) {
-        alert('Please complete transaction details.');
-        return;
-      }
-
-      transactions.push({
-        id: Date.now(),
-        accountId,
-        transactionDate,
-        transactionType,
-        transactionAmount,
-        transactionNote
-      });
-
-      clearTransactionForm();
-      saveData();
-      renderAll();
-    }
-
-    function editTransaction(transactionId) {
-      const transaction = transactions.find(t => t.id === transactionId);
-      if (!transaction) return;
-      editingTransactionId = transactionId;
-      document.getElementById('transactionAccount').value = transaction.accountId;
-      document.getElementById('transactionDate').value = transaction.transactionDate;
-      document.getElementById('transactionType').value = transaction.transactionType;
-      document.getElementById('transactionAmount').value = transaction.transactionAmount;
-      document.getElementById('transactionNote').value = transaction.transactionNote || '';
-      document.getElementById('addTransactionBtn').style.display = 'none';
-      document.getElementById('updateTransactionBtn').style.display = 'block';
-      document.getElementById('cancelTransactionEditBtn').style.display = 'block';
-    }
-
-    function updateTransaction() {
-      const transaction = transactions.find(t => t.id === editingTransactionId);
-      if (!transaction) return;
-
-      const accountId = Number(document.getElementById('transactionAccount').value);
-      const transactionDate = document.getElementById('transactionDate').value;
-      const transactionType = document.getElementById('transactionType').value;
-      const transactionAmount = parseFloat(document.getElementById('transactionAmount').value);
-      const transactionNote = document.getElementById('transactionNote').value.trim();
-
-      if (!accountId || !transactionDate || isNaN(transactionAmount) || transactionAmount <= 0) {
-        alert('Please complete transaction details.');
-        return;
-      }
-
-      transaction.accountId = accountId;
-      transaction.transactionDate = transactionDate;
-      transaction.transactionType = transactionType;
-      transaction.transactionAmount = transactionAmount;
-      transaction.transactionNote = transactionNote;
-
-      cancelTransactionEdit();
-      saveData();
-      renderAll();
-    }
-
-    function clearTransactionForm() {
-      document.getElementById('transactionType').value = 'Deposit';
-      document.getElementById('transactionAmount').value = '';
-      document.getElementById('transactionNote').value = '';
-      document.getElementById('transactionDate').value = todayString();
-    }
-
-    function cancelTransactionEdit() {
-      editingTransactionId = null;
-      clearTransactionForm();
-      document.getElementById('addTransactionBtn').style.display = 'block';
-      document.getElementById('updateTransactionBtn').style.display = 'none';
-      document.getElementById('cancelTransactionEditBtn').style.display = 'none';
-    }
-
-    function addDividendItem() {
-      const divName = document.getElementById('divName').value.trim();
-      const divType = document.getElementById('divType').value;
-      const divCapital = parseFloat(document.getElementById('divCapital').value);
-      const divRate = parseFloat(document.getElementById('divRate').value);
-      const divEarnedRaw = document.getElementById('divEarned').value;
-      const divNote = document.getElementById('divNote').value.trim();
-
-      if (!divName || isNaN(divCapital) || isNaN(divRate)) {
-        alert('Please complete MP2 / cooperative details.');
-        return;
-      }
-
-      const divEarned = divEarnedRaw === '' ? null : parseFloat(divEarnedRaw);
-
-      dividendItems.push({
-        id: Date.now(),
-        divName,
-        divType,
-        divCapital,
-        divRate,
-        divEarned,
-        divNote
-      });
-
-      clearDividendForm();
-      saveData();
-      renderAll();
-    }
-
-    function editDividendItem(id) {
-      const item = dividendItems.find(d => d.id === id);
-      if (!item) return;
-      editingDividendId = id;
-      document.getElementById('divName').value = item.divName;
-      document.getElementById('divType').value = item.divType;
-      document.getElementById('divCapital').value = item.divCapital;
-      document.getElementById('divRate').value = item.divRate;
-      document.getElementById('divEarned').value = item.divEarned ?? '';
-      document.getElementById('divNote').value = item.divNote || '';
-      document.getElementById('addDividendBtn').style.display = 'none';
-      document.getElementById('updateDividendBtn').style.display = 'block';
-      document.getElementById('cancelDividendBtn').style.display = 'block';
-    }
-
-    function updateDividendItem() {
-      const item = dividendItems.find(d => d.id === editingDividendId);
-      if (!item) return;
-
-      const divName = document.getElementById('divName').value.trim();
-      const divType = document.getElementById('divType').value;
-      const divCapital = parseFloat(document.getElementById('divCapital').value);
-      const divRate = parseFloat(document.getElementById('divRate').value);
-      const divEarnedRaw = document.getElementById('divEarned').value;
-      const divNote = document.getElementById('divNote').value.trim();
-
-      if (!divName || isNaN(divCapital) || isNaN(divRate)) {
-        alert('Please complete MP2 / cooperative details.');
-        return;
-      }
-
-      item.divName = divName;
-      item.divType = divType;
-      item.divCapital = divCapital;
-      item.divRate = divRate;
-      item.divEarned = divEarnedRaw === '' ? null : parseFloat(divEarnedRaw);
-      item.divNote = divNote;
-
-      cancelDividendEdit();
-      saveData();
-      renderAll();
-    }
-
-    function clearDividendForm() {
-      document.getElementById('divName').value = '';
-      document.getElementById('divType').value = 'MP2';
-      document.getElementById('divCapital').value = '';
-      document.getElementById('divRate').value = '';
-      document.getElementById('divEarned').value = '';
-      document.getElementById('divNote').value = '';
-    }
-
-    function cancelDividendEdit() {
-      editingDividendId = null;
-      clearDividendForm();
-      document.getElementById('addDividendBtn').style.display = 'block';
-      document.getElementById('updateDividendBtn').style.display = 'none';
-      document.getElementById('cancelDividendBtn').style.display = 'none';
-    }
-
-    function addInvestment() {
-      const invName = document.getElementById('invName').value.trim();
-      const invType = document.getElementById('invType').value;
-      const invCapital = parseFloat(document.getElementById('invCapital').value);
-      const invValue = parseFloat(document.getElementById('invValue').value);
-      const invNote = document.getElementById('invNote').value.trim();
-
-      if (!invName || isNaN(invCapital) || isNaN(invValue)) {
-        alert('Please complete investment details.');
-        return;
-      }
-
-      investments.push({
-        id: Date.now(),
-        invName,
-        invType,
-        invCapital,
-        invValue,
-        invNote
-      });
-
-      clearInvestmentForm();
-      saveData();
-      renderAll();
-    }
-
-    function editInvestment(id) {
-      const item = investments.find(i => i.id === id);
-      if (!item) return;
-      editingInvestmentId = id;
-      document.getElementById('invName').value = item.invName;
-      document.getElementById('invType').value = item.invType;
-      document.getElementById('invCapital').value = item.invCapital;
-      document.getElementById('invValue').value = item.invValue;
-      document.getElementById('invNote').value = item.invNote || '';
-      document.getElementById('addInvestmentBtn').style.display = 'none';
-      document.getElementById('updateInvestmentBtn').style.display = 'block';
-      document.getElementById('cancelInvestmentBtn').style.display = 'block';
-    }
-
-    function updateInvestment() {
-      const item = investments.find(i => i.id === editingInvestmentId);
-      if (!item) return;
-
-      const invName = document.getElementById('invName').value.trim();
-      const invType = document.getElementById('invType').value;
-      const invCapital = parseFloat(document.getElementById('invCapital').value);
-      const invValue = parseFloat(document.getElementById('invValue').value);
-      const invNote = document.getElementById('invNote').value.trim();
-
-      if (!invName || isNaN(invCapital) || isNaN(invValue)) {
-        alert('Please complete investment details.');
-        return;
-      }
-
-      item.invName = invName;
-      item.invType = invType;
-      item.invCapital = invCapital;
-      item.invValue = invValue;
-      item.invNote = invNote;
-
-      cancelInvestmentEdit();
-      saveData();
-      renderAll();
-    }
-
-    function clearInvestmentForm() {
-      document.getElementById('invName').value = '';
-      document.getElementById('invType').value = 'Stocks';
-      document.getElementById('invCapital').value = '';
-      document.getElementById('invValue').value = '';
-      document.getElementById('invNote').value = '';
-    }
-
-    function cancelInvestmentEdit() {
-      editingInvestmentId = null;
-      clearInvestmentForm();
-      document.getElementById('addInvestmentBtn').style.display = 'block';
-      document.getElementById('updateInvestmentBtn').style.display = 'none';
-      document.getElementById('cancelInvestmentBtn').style.display = 'none';
-    }
-
-    function deleteAccount(id) {
-      accounts = accounts.filter(a => a.id !== id);
-      transactions = transactions.filter(t => t.accountId !== id);
-      saveData();
-      renderAll();
-    }
-
-    function deleteTransaction(id) {
-      transactions = transactions.filter(t => t.id !== id);
-      saveData();
-      renderAll();
-    }
-
-    function deleteDividendItem(id) {
-      dividendItems = dividendItems.filter(d => d.id !== id);
-      saveData();
-      renderAll();
-    }
-
-    function deleteInvestment(id) {
-      investments = investments.filter(i => i.id !== id);
-      saveData();
-      renderAll();
-    }
-
-    function buildSavingsLedger(account) {
-      const accountTransactions = transactions
-        .filter(t => t.accountId === account.id)
-        .sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
-
-      let ledger = [{
-        id: `begin-${account.id}`,
-        transactionDate: account.beginningDate,
-        transactionType: 'Beginning Balance',
-        transactionAmount: account.beginningBalance,
-        transactionNote: 'Starting balance',
-        runningBalance: account.beginningBalance,
-        accountId: account.id,
-        accountName: account.accountName,
-        isSystem: true
-      }];
-
-      let runningBalance = account.beginningBalance;
-      accountTransactions.forEach(t => {
-        runningBalance += t.transactionType === 'Deposit' ? t.transactionAmount : -t.transactionAmount;
-        ledger.push({
-          ...t,
-          runningBalance,
-          accountName: account.accountName,
-          isSystem: false
-        });
-      });
-
-      return ledger.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || String(a.id).localeCompare(String(b.id)));
-    }
-
-    function computeSavingsMetrics(account) {
-      const ledger = buildSavingsLedger(account);
-      const currentBalance = ledger.length ? ledger[ledger.length - 1].runningBalance : account.beginningBalance;
-      const today = new Date(todayString());
-      const startDate = new Date(account.beginningDate);
-      const year = today.getFullYear();
-      const month = today.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const monthStart = new Date(year, month, 1);
-      const yearStart = new Date(year, 0, 1);
-      const dailyRate = account.annualRate / 100 / 365;
-
-      let dailyBalancesThisMonth = [];
-      let balance = account.beginningBalance;
-      let txPointer = 0;
-      const filteredLedger = ledger.filter(l => !l.isSystem);
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const thisDate = new Date(year, month, day);
-        const thisDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
-        if (new Date(account.beginningDate) > thisDate) {
-          dailyBalancesThisMonth.push(0);
-          continue;
-        }
-
-        while (txPointer < filteredLedger.length && filteredLedger[txPointer].transactionDate <= thisDateStr) {
-          balance += filteredLedger[txPointer].transactionType === 'Deposit' ? filteredLedger[txPointer].transactionAmount : -filteredLedger[txPointer].transactionAmount;
-          txPointer++;
-        }
-        dailyBalancesThisMonth.push(balance);
-      }
-
-      const adb = dailyBalancesThisMonth.reduce((s, v) => s + v, 0) / daysInMonth;
-      const dailyInterest = currentBalance * dailyRate;
-      const monthlyGross = account.interestMode === 'simple'
-        ? currentBalance * (account.annualRate / 100 / 12)
-        : dailyBalancesThisMonth.reduce((s, b) => s + (b * dailyRate), 0);
-      const monthlyTax = monthlyGross * 0.20;
-      const monthlyNet = monthlyGross - monthlyTax;
-
-      let accruedGross = 0;
-      const todayDay = today.getDate();
-      for (let i = 0; i < todayDay && i < dailyBalancesThisMonth.length; i++) {
-        accruedGross += dailyBalancesThisMonth[i] * dailyRate;
-      }
-      const accruedTax = accruedGross * 0.20;
-      const accruedNet = accruedGross - accruedTax;
-
-      return {
-        ledger,
-        currentBalance,
-        adb,
-        dailyInterest,
-        monthlyGross,
-        monthlyTax,
-        monthlyNet,
-        accruedGross,
-        accruedTax,
-        accruedNet
-      };
-    }
-
-    function renderAccountOptions() {
-      const select = document.getElementById('transactionAccount');
-      select.innerHTML = '<option value="">Select Account</option>';
-      accounts.forEach(a => {
-        select.innerHTML += `<option value="${a.id}">${a.accountName}</option>`;
-      });
-    }
-
-    function renderAccountsTable() {
-      const tbody = document.getElementById('accountsTableBody');
-      tbody.innerHTML = '';
-
-      let totalSavings = 0;
-      let totalInterest = 0;
-
-      accounts.forEach(account => {
-        const m = computeSavingsMetrics(account);
-        totalSavings += m.currentBalance;
-        totalInterest += account.interestMode === 'digital_daily' ? m.accruedNet : m.monthlyNet;
-
-        const modeLabel = account.interestMode === 'traditional'
-          ? 'Traditional'
-          : account.interestMode === 'digital_daily'
-            ? 'Digital Daily Credit'
-            : account.interestMode === 'digital_monthly'
-              ? 'Digital Monthly Credit'
-              : 'Simple Monthly';
-
-        tbody.innerHTML += `
-          <tr>
-            <td>${account.accountName}</td>
-            <td>${account.accountType}</td>
-            <td><span class="pill">${modeLabel}</span></td>
-            <td>${peso(account.beginningBalance)}</td>
-            <td>${peso(m.currentBalance)}</td>
-            <td>${Number(account.annualRate).toFixed(2)}%</td>
-            <td class="positive">${peso(m.dailyInterest)}</td>
-            <td>${peso(m.accruedNet)}</td>
-            <td>${peso(m.monthlyGross)}</td>
-            <td>${peso(m.monthlyTax)}</td>
-            <td class="positive">${peso(m.monthlyNet)}</td>
-            <td><button class="danger-btn" onclick="deleteAccount(${account.id})">Delete</button></td>
-            <td><button class="secondary-btn" onclick="editAccount(${account.id})">Edit</button></td>
-          </tr>
-        `;
-      });
-
-      document.getElementById('dashSavings').textContent = peso(totalSavings);
-      document.getElementById('dashInterest').textContent = peso(totalInterest);
-    }
-
-    function renderTransactionsTable() {
-      const tbody = document.getElementById('transactionsTableBody');
-      tbody.innerHTML = '';
-      let rows = [];
-      accounts.forEach(account => {
-        rows = rows.concat(buildSavingsLedger(account));
-      });
-      rows.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || String(a.id).localeCompare(String(b.id)));
-
-      rows.forEach(row => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${row.transactionDate}</td>
-            <td>${row.accountName}</td>
-            <td class="${row.transactionType === 'Withdrawal' ? 'negative' : 'positive'}">${row.transactionType}</td>
-            <td>${peso(row.transactionAmount)}</td>
-            <td>${peso(row.runningBalance)}</td>
-            <td>${row.transactionNote || '-'}</td>
-            <td>${row.isSystem ? '-' : `<button class="danger-btn" onclick="deleteTransaction(${row.id})">Delete</button>`}</td>
-            <td>${row.isSystem ? '-' : `<button class="secondary-btn" onclick="editTransaction(${row.id})">Edit</button>`}</td>
-          </tr>
-        `;
-      });
-    }
-
-    function renderDividendTable() {
-      const tbody = document.getElementById('dividendTableBody');
-      tbody.innerHTML = '';
-      let totalValue = 0;
-
-      dividendItems.forEach(item => {
-        const earned = item.divEarned == null ? (item.divCapital * (item.divRate / 100)) : item.divEarned;
-        const total = item.divCapital + earned;
-        totalValue += total;
-        tbody.innerHTML += `
-          <tr>
-            <td>${item.divName}</td>
-            <td>${item.divType}</td>
-            <td>${peso(item.divCapital)}</td>
-            <td>${Number(item.divRate).toFixed(2)}%</td>
-            <td class="positive">${peso(earned)}</td>
-            <td>${peso(total)}</td>
-            <td>${peso(0)}</td>
-            <td>${item.divNote || 'Tax-free'}</td>
-            <td><button class="danger-btn" onclick="deleteDividendItem(${item.id})">Delete</button></td>
-            <td><button class="secondary-btn" onclick="editDividendItem(${item.id})">Edit</button></td>
-          </tr>
-        `;
-      });
-
-      document.getElementById('dashDividends').textContent = peso(totalValue);
-    }
-
-    function renderInvestmentTable() {
-      const tbody = document.getElementById('investmentTableBody');
-      tbody.innerHTML = '';
-      let totalValue = 0;
-
-      investments.forEach(item => {
-        const gain = item.invValue - item.invCapital;
-        const growth = item.invCapital > 0 ? (gain / item.invCapital) * 100 : 0;
-        totalValue += item.invValue;
-        tbody.innerHTML += `
-          <tr>
-            <td>${item.invName}</td>
-            <td>${item.invType}</td>
-            <td>${peso(item.invCapital)}</td>
-            <td>${peso(item.invValue)}</td>
-            <td class="${gain >= 0 ? 'positive' : 'negative'}">${peso(gain)}</td>
-            <td class="${growth >= 0 ? 'positive' : 'negative'}">${growth.toFixed(2)}%</td>
-            <td>${item.invNote || '-'}</td>
-            <td><button class="danger-btn" onclick="deleteInvestment(${item.id})">Delete</button></td>
-            <td><button class="secondary-btn" onclick="editInvestment(${item.id})">Edit</button></td>
-          </tr>
-        `;
-      });
-
-      document.getElementById('dashInvestments').textContent = peso(totalValue);
-    }
-
-    function updateNetWorth() {
-      const totalSavings = accounts.reduce((s, a) => s + computeSavingsMetrics(a).currentBalance, 0);
-      const totalDividendValue = dividendItems.reduce((s, d) => {
-        const earned = d.divCurrent != null && d.divCurrent !== ''
-          ? (Number(d.divCurrent) - d.divCapital)
-          : (d.divEarned == null ? (d.divCapital * (d.divRate / 100)) : d.divEarned);
-        const total = d.divCurrent != null && d.divCurrent !== ''
-          ? Number(d.divCurrent)
-          : d.divCapital + earned;
-        return s + total;
-      }, 0);
-      const totalInvestmentValue = investments.reduce((s, i) => s + i.invValue, 0);
-      document.getElementById('dashNetWorth').textContent = peso(totalSavings + totalDividendValue + totalInvestmentValue);
-    }
-
-    function renderYearlySummary() {
-      const tbody = document.getElementById('yearlySummaryTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      const yearlyMap = {};
-
-      accounts.forEach(account => {
-        const metrics = computeSavingsMetrics(account);
-        const ledger = buildSavingsLedger(account);
-
-        ledger.forEach(row => {
-          const year = String(row.transactionDate).slice(0, 4);
-          if (!yearlyMap[year]) {
-            yearlyMap[year] = {
-              deposits: 0,
-              withdrawals: 0,
-              endingBalance: 0,
-              interest: 0
-            };
-          }
-
-          if (row.transactionType === 'Deposit') {
-            yearlyMap[year].deposits += row.transactionAmount;
-          }
-          if (row.transactionType === 'Withdrawal') {
-            yearlyMap[year].withdrawals += row.transactionAmount;
-          }
-          yearlyMap[year].endingBalance = row.runningBalance;
-        });
-
-        const beginYear = String(account.beginningDate).slice(0, 4);
-        if (!yearlyMap[beginYear]) {
-          yearlyMap[beginYear] = {
-            deposits: 0,
-            withdrawals: 0,
-            endingBalance: account.beginningBalance,
-            interest: 0
-          };
-        }
-
-        const thisYear = new Date().getFullYear();
-        const currentYearKey = String(thisYear);
-        if (!yearlyMap[currentYearKey]) {
-          yearlyMap[currentYearKey] = {
-            deposits: 0,
-            withdrawals: 0,
-            endingBalance: 0,
-            interest: 0
-          };
-        }
-        yearlyMap[currentYearKey].interest += metrics.monthlyNet * 12;
-        yearlyMap[currentYearKey].endingBalance = Math.max(yearlyMap[currentYearKey].endingBalance, metrics.currentBalance);
-      });
-
-      const years = Object.keys(yearlyMap).sort();
-      years.forEach(year => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${year}</td>
-            <td>${peso(yearlyMap[year].deposits)}</td>
-            <td>${peso(yearlyMap[year].withdrawals)}</td>
-            <td class="positive">${peso(yearlyMap[year].interest)}</td>
-            <td>${peso(yearlyMap[year].endingBalance)}</td>
-          </tr>
-        `;
-      });
-
-      if (!years.length) {
-        tbody.innerHTML = '<tr><td colspan="5">No yearly data yet.</td></tr>';
-      }
-    }
-
-    function exportData() {
-      const data = {
-        accounts,
-        transactions,
-        dividendItems,
-        investments,
-        exportedAt: new Date().toISOString()
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'financial-tracker-full-backup.json';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function resetAllData() {
-      if (!confirm('Reset all data? This will delete everything in this browser.')) return;
-      accounts = [];
-      transactions = [];
-      dividendItems = [];
-      investments = [];
-      editingAccountId = null;
-      editingTransactionId = null;
-      editingDividendId = null;
-      editingInvestmentId = null;
-      saveData();
-      renderAll();
-    }
-
-    function renderAll() {
-      renderAccountOptions();u
-      renderAccountsTable();
-      renderTransactionsTable();
-      renderDividendTable();
-      renderInvestmentTable();
-      renderYearlySummary();
-      updateNetWorth();
-      if (!document.getElementById('transactionDate').value) {
-        document.getElementById('transactionDate').value = todayString();
-      }
-      if (!document.getElementById('beginningDate').value) {
-        document.getElementById('beginningDate').value = todayString();
-      }
-    }
-
-    document.getElementById('transactionDate').value = todayString();
-    document.getElementById('beginningDate').value = todayString();
-    renderAll();
-  </script></body>
+<script>
+let accounts = JSON.parse(localStorage.getItem('acc')) || [];
+let transactions = JSON.parse(localStorage.getItem('tx')) || [];
+
+// 🔥 FORCE PESO
+function peso(v){
+return '₱'+Number(v||0).toLocaleString('en-PH',{minimumFractionDigits:2});
+}
+
+function save(){
+localStorage.setItem('acc',JSON.stringify(accounts));
+localStorage.setItem('tx',JSON.stringify(transactions));
+}
+
+function addAccount(){
+const name=accountName.value;
+const rate=parseFloat(annualRate.value);
+const bal=parseFloat(beginningBalance.value);
+
+if(!name||isNaN(rate)||isNaN(bal)) return alert("Complete fields");
+
+accounts.push({id:Date.now(),name,rate,bal});
+accountName.value='';annualRate.value='';beginningBalance.value='';
+save();render();
+}
+
+function addTransaction(){
+const id=Number(transactionAccount.value);
+const type=transactionType.value;
+const amt=parseFloat(transactionAmount.value);
+
+if(!id||isNaN(amt)) return;
+
+const acc=accounts.find(a=>a.id===id);
+acc.bal += type==="Deposit"?amt:-amt;
+
+save();render();
+}
+
+function render(){
+transactionAccount.innerHTML='<option>Select</option>';
+accounts.forEach(a=>{
+transactionAccount.innerHTML+=`<option value="${a.id}">${a.name}</option>`;
+});
+
+accountsTableBody.innerHTML='';
+let total=0;
+
+accounts.forEach(a=>{
+const interest=a.bal*(a.rate/100/12);
+total+=a.bal;
+
+accountsTableBody.innerHTML+=`
+<tr>
+<td>${a.name}</td>
+<td>${peso(a.bal)}</td>
+<td>${peso(interest)}</td>
+</tr>`;
+});
+
+dashSavings.innerText=peso(total);
+dashNetWorth.innerText=peso(total);
+}
+
+render();
+</script>
+
+</body>
 </html>
