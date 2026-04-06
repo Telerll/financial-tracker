@@ -173,16 +173,13 @@ th {
   .dashboard {
     grid-template-columns: 1fr;
   }
-
-  .brand-logo {
-    width: 115px;
-  }
 }
 .brand-logo {
   height: 70px !important;
   width: auto !important;
   max-width: 100% !important;
   object-fit: contain;
+  display: block;
 }
 img {
   max-width: 100%;
