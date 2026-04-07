@@ -1,4 +1,4 @@
-9.9/* RESET */
+ù9.9/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -326,4 +326,26 @@ button {
 /* Inputs */
 input, select {
   border-radius: 10px;
+}
+/* APP MODE (CONTROLLED) */
+
+.app-mode .brand-header {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.app-mode .icon-box {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+}
+
+.app-mode .brand-text {
+  align-items: center;
+}
+
+.app-mode .card,
+.app-mode .section {
+  border-radius: 20px;
 }
