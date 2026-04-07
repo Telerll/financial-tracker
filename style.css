@@ -349,3 +349,21 @@ input, select {
 .app-mode .section {
   border-radius: 20px;
 }
+/* HOVER EFFECT (FINAL ADD) */
+
+.card:hover,
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  transform: scale(1.01);
+}
