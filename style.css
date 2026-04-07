@@ -27,10 +27,10 @@
 }
 
 .brand-logo {
-  width: 42px;
-  height: 42px;
+  width: 32px;
+  height: 32px;
   display: block;
-  margin: 0 auto 8px;
+  margin: 0 auto 4px;
   object-fit: cover;
 }
 
