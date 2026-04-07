@@ -1,4 +1,4 @@
-/* RESET */
+9/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -212,4 +212,33 @@ th {
   .top-split {
     grid-template-columns: 1fr;
   }
+}
+/* QUICK NOTES FIX */
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.note-clear-btn {
+  width: auto !important;
+  display: inline-block;
+  flex: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+/* STATUS COLORS */
+.status-saving {
+  color: #f59e0b;
+}
+
+.status-saved {
+  color: #16a34a;
+}
+
+.status-cleared {
+  color: #ef4444;
 }
