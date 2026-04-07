@@ -1,4 +1,3 @@
-/* ICON BOX (frame ng SP logo) */
 .icon-box {
   width: 90px;
   height: 90px;
@@ -12,32 +11,11 @@
   justify-content: center;
 }
 
-/* SP LOGO */
 .brand-logo {
-  width: 100%;
-  height: 100%;
+  width: 120%;        /* mas malaki para maputol puti */
+  height: 120%;
+
   object-fit: cover;
 
-  transform: scale(1.18); /* tinatago yung white space */
-  display: block;
-}
-
-/* HEADER TEXT */
-.brand-inner {
-  text-align: center;
-  padding: 10px 16px 12px;
-}
-
-.brand-header h1 {
-  font-size: 32px;
-  color: #166534;
-  margin: 0 0 6px;
-  font-weight: 800;
-}
-
-.brand-header p {
-  font-size: 12px;
-  color: #94a3b8;
-  letter-spacing: 3px;
-  margin: 0;
+  transform: translate(-10%, -10%);  /* ito ang magtatanggal ng white edges */
 }
