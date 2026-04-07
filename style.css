@@ -257,3 +257,19 @@ th {
   font-size: 12px;
   border-radius: 8px;
 }
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.note-clear-btn {
+  width: auto !important;
+  display: inline-block;
+  flex: none;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 8px;
+}
