@@ -27,13 +27,14 @@
 }
 
 .brand-logo {
+  width: 52px;
   height: 52px;
-  width: auto;
+
   display: block;
   margin: 0 auto 8px;
-  object-fit: contain;
-  position: relative;
-  z-index: 1;
+
+  object-fit: cover;   /* ito ang magtatanggal ng extra white space */
+}
 }
 
 .brand-header h1 {
