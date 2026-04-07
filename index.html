@@ -25,21 +25,25 @@
     }
 
     .brand-header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e5e7eb;
-      overflow: hidden;
+      text-align: center;
+      margin-bottom: 18px;
+      padding: 18px 12px 14px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
-    .brand-logo {
-      height: 60px;
-      width: auto;
-      display: block;
-      object-fit: contain;
-      max-width: 100%;
+    .brand-header h1 {
+      font-size: 34px;
+      color: #166534;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .brand-header p {
+      font-size: 14px;
+      color: #6b7280;
+      letter-spacing: 2px;
     }
 
     .dashboard {
@@ -181,8 +185,13 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .brand-logo {
-        height: 52px;
+      .brand-header h1 {
+        font-size: 28px;
+      }
+
+      .brand-header p {
+        font-size: 12px;
+        letter-spacing: 1.5px;
       }
 
       .value {
@@ -200,8 +209,8 @@
         grid-template-columns: 1fr;
       }
 
-      .brand-logo {
-        height: 46px;
+      .brand-header h1 {
+        font-size: 24px;
       }
     }
   </style>
@@ -209,42 +218,10 @@
 <body>
   <div class="container">
 
-    <div class="logo">
-<svg viewBox="0 0 700 180" width="220">
-
-  <rect x="5" y="5" width="690" height="170" rx="18"
-        fill="#ffffff"
-        stroke="#166534"
-        stroke-width="3"/>
-
-  <text x="50%" y="80"
-        text-anchor="middle"
-        font-size="58"
-        font-weight="800"
-        fill="#166534"
-        font-family="Arial">
-    SUBI PH
-  </text>
-
-  <text x="50%" y="120"
-        text-anchor="middle"
-        font-size="20"
-        fill="#4b5563"
-        font-family="Arial">
-    FINANCIAL TRACKER
-  </text>
-
-  <text x="50%" y="150"
-        text-anchor="middle"
-        font-size="15"
-        letter-spacing="4"
-        fill="#6b7280"
-        font-family="Arial">
-    SAVE • GROW • TRACK
-  </text>
-
-</svg>
-</div>
+    <div class="brand-header">
+      <h1>SUBI PH</h1>
+      <p>SAVE • GROW • TRACK</p>
+    </div>
 
     <div class="dashboard">
       <div class="card">
@@ -478,7 +455,7 @@
     <div class="section">
       <h2>Yearly Summary</h2>
       <p class="muted">
-        Annual summary of savings transactions, including deposits, withdrawals, estimated net interest, and ending balance.
+        Annual summary of savings transactions showing total deposits and total withdrawals only.
       </p>
       <div class="table-wrap">
         <table>
@@ -487,8 +464,6 @@
               <th>Year</th>
               <th>Total Deposits</th>
               <th>Total Withdrawals</th>
-              <th>Estimated Net Interest</th>
-              <th>Ending Balance</th>
             </tr>
           </thead>
           <tbody id="yearlySummaryTableBody"></tbody>
@@ -1191,7 +1166,6 @@
       const yearlyMap = {};
 
       accounts.forEach(account => {
-        const metrics = computeSavingsMetrics(account);
         const ledger = buildSavingsLedger(account);
 
         ledger.forEach(row => {
@@ -1200,9 +1174,7 @@
           if (!yearlyMap[year]) {
             yearlyMap[year] = {
               deposits: 0,
-              withdrawals: 0,
-              endingBalance: 0,
-              interest: 0
+              withdrawals: 0
             };
           }
 
@@ -1213,34 +1185,7 @@
           if (row.transactionType === 'Withdrawal') {
             yearlyMap[year].withdrawals += row.transactionAmount;
           }
-
-          yearlyMap[year].endingBalance = row.runningBalance;
         });
-
-        const beginYear = String(account.beginningDate).slice(0, 4);
-
-        if (!yearlyMap[beginYear]) {
-          yearlyMap[beginYear] = {
-            deposits: 0,
-            withdrawals: 0,
-            endingBalance: account.beginningBalance,
-            interest: 0
-          };
-        }
-
-        const thisYear = String(new Date().getFullYear());
-
-        if (!yearlyMap[thisYear]) {
-          yearlyMap[thisYear] = {
-            deposits: 0,
-            withdrawals: 0,
-            endingBalance: 0,
-            interest: 0
-          };
-        }
-
-        yearlyMap[thisYear].interest += metrics.monthlyNet * 12;
-        yearlyMap[thisYear].endingBalance = Math.max(yearlyMap[thisYear].endingBalance, metrics.currentBalance);
       });
 
       const years = Object.keys(yearlyMap).sort();
@@ -1251,14 +1196,12 @@
             <td>${year}</td>
             <td>${peso(yearlyMap[year].deposits)}</td>
             <td>${peso(yearlyMap[year].withdrawals)}</td>
-            <td class="positive">${peso(yearlyMap[year].interest)}</td>
-            <td>${peso(yearlyMap[year].endingBalance)}</td>
           </tr>
         `;
       });
 
       if (!years.length) {
-        tbody.innerHTML = '<tr><td colspan="5">No yearly data yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3">No yearly data yet.</td></tr>';
       }
     }
 
