@@ -348,13 +348,14 @@
       </div>
 
       <div class="split-right">
-      <h3>Quick Notes</h3>
+  <h3>Quick Notes</h3>
 
-<textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
+  <textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
 
-<div class="note-actions">
-  <span id="noteStatus">Not saved</span>
-  <button onclick="clearNote()" class="danger-btn">Clear</button>
+  <div class="note-actions">
+    <span id="noteStatus">Not saved</span>
+    <button onclick="clearNote()" class="danger-btn note-clear-btn">Clear</button>
+  </div>
 </div>
 
     <div class="top-forms">
@@ -1399,7 +1400,45 @@ if (noteEl && statusEl) {
     statusEl.style.color = "#ef4444";
   };
 }
+// QUICK NOTES SYSTEM
+const noteEl = document.getElementById("quickNote");
+const statusEl = document.getElementById("noteStatus");
 
+if (noteEl && statusEl) {
+
+  // LOAD SAVED NOTE
+  noteEl.value = localStorage.getItem("quick_note") || "";
+
+  if (noteEl.value) {
+    statusEl.textContent = "Saved ✓";
+    statusEl.className = "status-saved";
+  }
+
+  // AUTO SAVE
+  noteEl.addEventListener("input", () => {
+    localStorage.setItem("quick_note", noteEl.value);
+
+    statusEl.textContent = "Saving...";
+    statusEl.className = "status-saving";
+
+    setTimeout(() => {
+      statusEl.textContent = "Saved ✓";
+      statusEl.className = "status-saved";
+    }, 400);
+  });
+
+  // CLEAR NOTE
+  window.clearNote = function () {
+    if (!confirm("Clear note?")) return;
+
+    noteEl.value = "";
+    localStorage.removeItem("quick_note");
+
+    statusEl.textContent = "Cleared";
+    statusEl.className = "status-cleared";
+  };
+
+}
 </script>
 </body>
 </html>
