@@ -1,85 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Header Test</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f8f3;
-  padding: 16px;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUBI PH Financial Tracker</title>
 
-.brand-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px;
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-.icon-box {
-  width: 70px;
-  height: 70px;
-  border-radius: 14px;
-  overflow: hidden;
-  flex-shrink: 0;
-  background: #2e7d32;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8f3;
+      color: #1f2937;
+      padding: 16px;
+    }
 
-.brand-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding: 16px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
 
-.brand-text h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #166534;
-  font-weight: 800;
-}
+    .icon-box {
+      width: 70px;
+      height: 70px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #2e7d32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.subline {
-  margin: 2px 0;
-  font-size: 12px;
-  color: #64748b;
-  letter-spacing: 2px;
-}
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-.tagline {
-  margin: 0;
-  font-size: 11px;
-  color: #94a3b8;
-  letter-spacing: 2px;
-}
-</style>
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #166534;
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1.1;
+    }
+
+    .subline {
+      margin: 3px 0;
+      font-size: 12px;
+      color: #64748b;
+      letter-spacing: 2px;
+    }
+
+    .tagline {
+      margin: 0;
+      font-size: 11px;
+      color: #94a3b8;
+      letter-spacing: 2px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .card,
+    .section {
+      background: white;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 16px;
+    }
+
+    .card h3,
+    .section h2,
+    .section h3 {
+      color: #2e7d32;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .value {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .muted {
+      color: #666;
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secondary-btn {
+      background: #607d8b;
+    }
+
+    .danger-btn {
+      background: #c62828;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .positive {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .negative {
+      color: #c62828;
+      font-weight: bold;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .top-split {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .split-left,
+    .split-right {
+      padding: 4px;
+    }
+
+    .split-right {
+      border-left: 1px solid #e5e7eb;
+      padding-left: 16px;
+    }
+
+    .top-forms {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .brand-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .brand-text {
+        align-items: center;
+        text-align: center;
+      }
+
+      .brand-text h1 {
+        font-size: 26px;
+      }
+
+      .subline,
+      .tagline {
+        letter-spacing: 1.5px;
+      }
+
+      .top-split,
+      .top-forms {
+        grid-template-columns: 1fr;
+      }
+
+      .split-right {
+        border-left: none;
+        border-top: 1px solid #e5e7eb;
+        padding-left: 4px;
+        padding-top: 12px;
+      }
+
+      .value {
+        font-size: 18px;
+      }
+
+      .card,
+      .section {
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-text h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
 
-<div class="brand-header">
-  <div class="icon-box">
-    <img src="logo.png" alt="SUBI PH Logo" class="brand-logo">
-  </div>
+    <div class="brand-header">
+      <div class="icon-box">
+        <img src="logo.png" alt="SUBI PH Logo" class="brand-logo" />
+      </div>
 
-  <div class="brand-text">
-    <h1>SUBI PH</h1>
-    <p class="subline">FINANCIAL TRACKER</p>
-    <p class="tagline">SAVE • GROW • TRACK</p>
-  </div>
-</div>
+      <div class="brand-text">
+        <h1>SUBI PH</h1>
+        <p class="subline">FINANCIAL TRACKER</p>
+        <p class="tagline">SAVE • GROW • TRACK</p>
+      </div>
+    </div>
 
-        <div class="dashboard">
+    <div class="dashboard">
       <div class="card">
         <h3>Total Savings</h3>
         <div class="value" id="dashSavings">₱0.00</div>
@@ -106,72 +340,102 @@ body {
       </div>
     </div>
 
-    <div class="section">
-      <h2>About SUBI</h2>
-      <p class="muted">SUBI means “to save,” from Pagsusubi — setting aside money for the future.</p>
-      <p class="muted">SUBI PH is a financial tracker designed to help you track and monitor your savings and other investments for easier and more organized financial management.</p>
-    </div>
-
-    <div class="section">
-      <h2>Add Savings Account</h2>
-      <div class="form-grid">
-        <input type="text" id="bankName" placeholder="Bank Name">
-        <select id="accountType">
-          <option value="Traditional Bank">Traditional Bank</option>
-          <option value="Digital Bank">Digital Bank</option>
-          <option value="E-Wallet">E-Wallet</option>
-        </select>
-        <select id="interestMode">
-          <option value="traditional">Traditional Bank (Daily Accrual, Monthly Credit)</option>
-          <option value="digital_daily">Digital Bank (Daily Accrual, Daily Credit)</option>
-          <option value="digital_monthly">Digital Bank (Daily Accrual, Monthly Credit)</option>
-          <option value="simple">Simple Monthly Projection</option>
-        </select>
-        <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01">
-        <input type="number" id="beginningBalance" placeholder="Beginning Balance" min="0" step="0.01">
-        <input type="date" id="beginningDate">
+    <div class="section top-split">
+      <div class="split-left">
+        <h2>What is SUBI</h2>
+        <p class="muted">SUBI means “to save,” from Pagsusubi — setting aside money for the future.</p>
+        <p class="muted">SUBI PH helps you track your savings and investments in a simple and organized way.</p>
       </div>
 
-      <div class="btn-row">
-        <button onclick="addAccount()" id="addAccountBtn">Add Account</button>
-        <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
-        <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
-      </div>
-
-      <p class="muted">
-        Beginning balance and beginning date are required to support more accurate account-level calculations.
-        Traditional banks typically use daily accrual with monthly crediting.
-        Digital banks may use daily accrual with either daily or monthly crediting.
-      </p>
-    </div>
-
-    <div class="section">
-      <h2>Add Savings Transaction</h2>
-      <div class="form-grid">
-        <select id="transactionAccount"></select>
-        <input type="date" id="transactionDate">
-        <select id="transactionType">
-          <option value="Deposit">Deposit</option>
-          <option value="Withdrawal">Withdrawal</option>
-        </select>
-        <input type="number" id="transactionAmount" placeholder="Amount" min="0" step="0.01">
-        <input type="text" id="transactionNote" placeholder="Note">
-      </div>
-
-      <div class="btn-row">
-        <button onclick="addTransaction()" id="addTransactionBtn">Add Transaction</button>
-        <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
-        <button onclick="cancelTransactionEdit()" id="cancelTransactionEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+      <div class="split-right">
+        <h2>Quick Notes</h2>
+        <p class="muted">Use this space for goals, reminders, or financial targets.</p>
       </div>
     </div>
 
+    <div class="top-forms">
+      <div class="section">
+        <h2>Add Bank</h2>
+        <div class="form-grid">
+          <input type="text" id="accountName" placeholder="Bank Name" />
+          <select id="accountType">
+            <option value="Traditional Bank">Traditional Bank</option>
+            <option value="Digital Bank">Digital Bank</option>
+            <option value="E-Wallet">E-Wallet</option>
+          </select>
+          <select id="interestMode">
+            <option value="traditional">Traditional Bank (Daily Accrual, Monthly Credit)</option>
+            <option value="digital_daily">Digital Bank (Daily Accrual, Daily Credit)</option>
+            <option value="digital_monthly">Digital Bank (Daily Accrual, Monthly Credit)</option>
+            <option value="simple">Simple Monthly Projection</option>
+          </select>
+          <input type="number" id="annualRate" placeholder="Annual Interest Rate (%)" min="0" step="0.01" />
+          <input type="number" id="beginningBalance" placeholder="Beginning Balance" min="0" step="0.01" />
+          <input type="date" id="beginningDate" />
+        </div>
+
+        <div class="btn-row">
+          <button onclick="addAccount()" id="addAccountBtn">Add Account</button>
+          <button onclick="updateAccount()" id="updateAccountBtn" class="secondary-btn" style="display:none;">Update Account</button>
+          <button onclick="cancelAccountEdit()" id="cancelAccountEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+        </div>
+
+        <p class="muted">
+          Beginning balance and beginning date are required to support more accurate account-level calculations.
+          Traditional banks typically use daily accrual with monthly crediting.
+          Digital banks may use daily accrual with either daily or monthly crediting.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Add Transaction</h2>
+        <div class="form-grid">
+          <select id="transactionAccount"></select>
+          <input type="date" id="transactionDate" />
+          <select id="transactionType">
+            <option value="Deposit">Deposit</option>
+            <option value="Withdrawal">Withdrawal</option>
+          </select>
+          <input type="number" id="transactionAmount" placeholder="Amount" min="0" step="0.01" />
+          <input type="text" id="transactionNote" placeholder="Note" />
+        </div>
+
+        <div class="btn-row">
+          <button onclick="addTransaction()" id="addTransactionBtn">Add Transaction</button>
+          <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
+          <button onclick="cancelTransactionEdit()" id="cancelTransactionEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
+        </div>
+      </div>
+    </div>
+
     <div class="section">
-      <h2>Savings Account Summary</h2>
+      <h2>Transaction History</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Account</th>
+              <th>Date</th>
+              <th>Bank</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Running Balance</th>
+              <th>Note</th>
+              <th>Action</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Account Summary</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bank</th>
               <th>Type</th>
               <th>Mode</th>
               <th>Beginning Balance</th>
@@ -192,30 +456,9 @@ body {
     </div>
 
     <div class="section">
-      <h2>Savings Transactions</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Account</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Running Balance</th>
-              <th>Note</th>
-              <th>Action</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody id="transactionsTableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="section">
       <h2>MP2 / Cooperative (Tax-Free)</h2>
       <div class="form-grid">
-        <input type="text" id="divName" placeholder="MP2 / Cooperative Name">
+        <input type="text" id="divName" placeholder="MP2 / Cooperative Name" />
         <select id="divType">
           <option value="MP2">MP2</option>
           <option value="Cooperative">Cooperative</option>
@@ -225,11 +468,11 @@ body {
           <option value="declared">Declared</option>
           <option value="credited">Credited</option>
         </select>
-        <input type="number" id="divCapital" placeholder="Capital / Principal" min="0" step="0.01">
-        <input type="number" id="divRate" placeholder="Declared Rate (%)" min="0" step="0.01">
-        <input type="number" id="divEarned" placeholder="Actual Earned (optional)" min="0" step="0.01">
-        <input type="number" id="divCurrent" placeholder="Current Value (optional)" min="0" step="0.01">
-        <input type="text" id="divNote" placeholder="Note / Year">
+        <input type="number" id="divCapital" placeholder="Capital / Principal" min="0" step="0.01" />
+        <input type="number" id="divRate" placeholder="Declared Rate (%)" min="0" step="0.01" />
+        <input type="number" id="divEarned" placeholder="Actual Earned (optional)" min="0" step="0.01" />
+        <input type="number" id="divCurrent" placeholder="Current Value (optional)" min="0" step="0.01" />
+        <input type="text" id="divNote" placeholder="Note / Year" />
       </div>
 
       <div class="btn-row">
@@ -267,7 +510,7 @@ body {
     <div class="section">
       <h2>Other Investments</h2>
       <div class="form-grid">
-        <input type="text" id="invName" placeholder="Investment Name">
+        <input type="text" id="invName" placeholder="Investment Name" />
         <select id="invType">
           <option value="Stocks">Stocks</option>
           <option value="Mutual Fund">Mutual Fund</option>
@@ -277,9 +520,9 @@ body {
           <option value="Business">Business</option>
           <option value="Other">Other</option>
         </select>
-        <input type="number" id="invCapital" placeholder="Capital / Amount Invested" min="0" step="0.01">
-        <input type="number" id="invValue" placeholder="Current Market Value" min="0" step="0.01">
-        <input type="text" id="invNote" placeholder="Note">
+        <input type="number" id="invCapital" placeholder="Capital / Amount Invested" min="0" step="0.01" />
+        <input type="number" id="invValue" placeholder="Current Market Value" min="0" step="0.01" />
+        <input type="text" id="invNote" placeholder="Note" />
       </div>
 
       <div class="btn-row">
@@ -383,7 +626,7 @@ body {
       const beginningDate = document.getElementById('beginningDate').value;
 
       if (!accountName || isNaN(annualRate) || isNaN(beginningBalance) || !beginningDate) {
-        alert('Please complete savings account details including beginning balance and beginning date.');
+        alert('Please complete bank details including beginning balance and beginning date.');
         return;
       }
 
@@ -431,7 +674,7 @@ body {
       const beginningDate = document.getElementById('beginningDate').value;
 
       if (!accountName || isNaN(annualRate) || isNaN(beginningBalance) || !beginningDate) {
-        alert('Please complete savings account details including beginning balance and beginning date.');
+        alert('Please complete bank details including beginning balance and beginning date.');
         return;
       }
 
@@ -857,7 +1100,7 @@ body {
 
     function renderAccountOptions() {
       const select = document.getElementById('transactionAccount');
-      select.innerHTML = '<option value="">Select Account</option>';
+      select.innerHTML = '<option value="">Select Bank</option>';
 
       accounts.forEach(a => {
         select.innerHTML += `<option value="${a.id}">${a.accountName}</option>`;
