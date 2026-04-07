@@ -51,3 +51,31 @@
   color:#94a3b8;
   letter-spacing:2px;
 }
+/* ===== FORCE HEADER FIX (SAFE) ===== */
+
+.brand-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  text-align: left !important;
+}
+
+.icon-box {
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 14px !important; /* square */
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+
+.brand-text {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.brand-logo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
