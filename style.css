@@ -1,21 +1,285 @@
-.icon-box {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 8px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  overflow: hidden;
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f8f3;
+  color: #1f2937;
+  padding: 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* HEADER */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 18px;
+  padding: 16px;
   border-radius: 18px;
+
+  background: linear-gradient(135deg, #ffffff, #f0f7f2);
+
+  box-shadow:
+    0 10px 25px rgba(22, 101, 52, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.icon-box {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .brand-logo {
-  width: 120%;        /* mas malaki para maputol puti */
-  height: 120%;
-
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
 
-  transform: translate(-10%, -10%);  /* ito ang magtatanggal ng white edges */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-text h1 {
+  font-size: 28px;
+  color: #166534;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+
+.brand-text .subline {
+  font-size: 12px;
+  color: #64748b;
+  letter-spacing: 2px;
+  margin: 3px 0;
+}
+
+.brand-text .tagline {
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* DASHBOARD */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.card,
+.section {
+  background: white;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+}
+
+.card h3,
+.section h2 {
+  color: #2e7d32;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+button {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #607d8b;
+}
+
+.danger-btn {
+  background: #c62828;
+}
+
+.muted {
+  color: #666;
+  font-size: 13px;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 13px;
+  vertical-align: top;
+}
+
+th {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.positive {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.negative {
+  color: #c62828;
+  font-weight: bold;
+}
+
+.btn-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .dashboard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  .dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand-header {
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .icon-box {
+    width: 60px;
+    height: 60px;
+  }
+
+  .brand-text h1 {
+    font-size: 24px;
+  }
+
+  .brand-text .subline {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+
+  .brand-text .tagline {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .value {
+    font-size: 18px;
+  }
+
+  .card,
+  .section {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .brand-text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .icon-box {
+    width: 72px;
+    height: 72px;
+  }
+
+  .brand-text h1 {
+    font-size: 24px;
+  }
 }
