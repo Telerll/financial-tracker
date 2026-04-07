@@ -283,3 +283,36 @@ img {
     font-size: 24px;
   }
 }
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* fake logo muna */
+.logo-placeholder {
+  width: 60px;
+  height: 60px;
+  background: #2e7d32;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+/* text */
+.brand-text h1 {
+  margin: 0;
+}
+
+.subline {
+  font-size: 12px;
+}
+
+.tagline {
+  font-size: 11px;
+}
