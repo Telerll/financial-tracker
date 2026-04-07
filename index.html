@@ -1368,12 +1368,11 @@ document.getElementById('transactionDate').value = todayString();
 document.getElementById('beginningDate').value = todayString();
 renderAll();
 
-document.addEventListener("DOMContentLoaded", () => {
-  const noteEl = document.getElementById("quickNote");
-  const statusEl = document.getElementById("noteStatus");
+// Quick Notes
+const noteEl = document.getElementById("quickNote");
+const statusEl = document.getElementById("noteStatus");
 
-  if (!noteEl || !statusEl) return;
-
+if (noteEl && statusEl) {
   noteEl.value = localStorage.getItem("quick_note") || "";
 
   if (noteEl.value) {
@@ -1394,13 +1393,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.clearNote = function () {
     if (!confirm("Clear note?")) return;
-
     noteEl.value = "";
     localStorage.removeItem("quick_note");
     statusEl.textContent = "Cleared";
     statusEl.style.color = "#ef4444";
   };
-});
+}
 
 </script>
 </body>
