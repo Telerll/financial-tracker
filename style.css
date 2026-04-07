@@ -288,3 +288,17 @@ img {
     font-size: 24px;
   }
 }
+/* FIX: Quick Notes Clear button */
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.note-clear-btn {
+  width: auto !important;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+}
