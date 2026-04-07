@@ -1,4 +1,4 @@
-l<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -210,20 +210,21 @@ l<!DOCTYPE html>
 
     .top-split {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+      align-items: start;
       margin-bottom: 16px;
     }
 
     .split-left,
     .split-right {
-      padding: 4px;
+      padding: 0;
       min-width: 0;
     }
 
     .split-right {
-      border-left: 1px solid #e5e7eb;
-      padding-left: 16px;
+      border-left: none;
+      padding-left: 0;
     }
 
     .top-forms {
@@ -238,7 +239,7 @@ l<!DOCTYPE html>
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .note-clear-btn {
@@ -248,6 +249,15 @@ l<!DOCTYPE html>
       padding: 6px 14px;
       font-size: 12px;
       border-radius: 8px;
+    }
+
+    #noteStatus {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .split-right textarea {
+      min-height: 90px;
     }
 
     img {
@@ -295,9 +305,7 @@ l<!DOCTYPE html>
       }
 
       .split-right {
-        border-left: none;
         border-top: 1px solid #e5e7eb;
-        padding-left: 4px;
         padding-top: 12px;
       }
 
@@ -1387,7 +1395,6 @@ l<!DOCTYPE html>
     document.getElementById('beginningDate').value = todayString();
     renderAll();
 
-    // QUICK NOTES
     const noteEl = document.getElementById("quickNote");
     const statusEl = document.getElementById("noteStatus");
 
