@@ -27,11 +27,14 @@
 }
 
 .brand-logo {
-  width: 32px !important;
- height: 32px !important;
+  width: 32px;
+  height: 32px;
+
   display: block;
   margin: 0 auto 4px;
+
   object-fit: cover;
+  transform: scale(1.4);   /* eto ang magtatanggal ng white space */
 }
 
 .brand-header h1 {
