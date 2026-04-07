@@ -1364,35 +1364,43 @@
     renderAll();
  <script>
   ...
-  document.getElementById('transactionDate').value = todayString();
-  document.getElementById('beginningDate').value = todayString();
-  renderAll();
+ document.getElementById('transactionDate').value = todayString();
+document.getElementById('beginningDate').value = todayString();
+renderAll();
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const noteEl = document.getElementById("quickNote");
-    const statusEl = document.getElementById("noteStatus");
+document.addEventListener("DOMContentLoaded", () => {
+  const noteEl = document.getElementById("quickNote");
+  const statusEl = document.getElementById("noteStatus");
 
-    if (!noteEl || !statusEl) return;
+  if (!noteEl || !statusEl) return;
 
-    noteEl.value = localStorage.getItem("quick_note") || "";
-    if (noteEl.value) {
+  noteEl.value = localStorage.getItem("quick_note") || "";
+
+  if (noteEl.value) {
+    statusEl.textContent = "Saved ✓";
+    statusEl.style.color = "#16a34a";
+  }
+
+  noteEl.addEventListener("input", () => {
+    localStorage.setItem("quick_note", noteEl.value);
+    statusEl.textContent = "Saving...";
+    statusEl.style.color = "#f59e0b";
+
+    setTimeout(() => {
       statusEl.textContent = "Saved ✓";
-    }
-
-    noteEl.addEventListener("input", () => {
-      localStorage.setItem("quick_note", noteEl.value);
-      statusEl.textContent = "Saving...";
-
-      
-    window.clearNote = function () {
-      if (!confirm("Clear note?")) return;
-
-      noteEl.value = "";
-      localStorage.removeItem("quick_note");
-      statusEl.textContent = "Cleared";
-    statusEl.style.color = "#ef4444";
-    };
+      statusEl.style.color = "#16a34a";
+    }, 400);
   });
+
+  window.clearNote = function () {
+    if (!confirm("Clear note?")) return;
+
+    noteEl.value = "";
+    localStorage.removeItem("quick_note");
+    statusEl.textContent = "Cleared";
+    statusEl.style.color = "#ef4444";
+  };
+});
 
 </script>
 </body>
