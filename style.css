@@ -46,13 +46,10 @@ body {
 }
 
 .brand-logo {
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
+  width: 90px;
   display: block;
-  margin: 0 auto 8px;
-  position: relative;
-  z-index: 1;
+  margin: -10px auto -6px;  /* eto ang magic */
+};
 }
 
 .brand-header h1 {
