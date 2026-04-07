@@ -1,145 +1,47 @@
+/* ===== SLEEK HEADER ===== */
 .brand-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 
-  margin-bottom: 18px;
-  padding: 16px;
-  border-radius: 18px;
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  border-radius: 20px;
 
-  background: linear-gradient(135deg, #ffffff, #f0f7f2);
-
-  box-shadow:
-    0 10px 25px rgba(22, 101, 52, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.05);
-
-  text-align: left;
-}
-
-.icon-box {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #2e7d32;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
-}
-
-.brand-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.brand-text h1 {
-  font-size: 28px;
-  color: #166534;
-  margin: 0;
-  font-weight: 800;
-  letter-spacing: 1px;
-  line-height: 1.1;
-}
-
-.subline {
-  font-size: 12px;
-  color: #64748b;
-  letter-spacing: 2px;
-  margin: 3px 0;
-}
-
-.tagline {
-  font-size: 11px;
-  color: #94a3b8;
-  letter-spacing: 2px;
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  .brand-header {
-    gap: 12px;
-    padding: 14px;
-  }
-
-  .icon-box {
-    width: 60px;
-    height: 60px;
-  }
-
-  .brand-text h1 {
-    font-size: 24px;
-  }
-
-  .subline {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-  }
-
-  .tagline {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .brand-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .brand-text {
-    align-items: center;
-    text-align: center;
-  }
-
-  .icon-box {
-    width: 72px;
-    height: 72px;
-  }
-
-  .brand-text h1 {
-    font-size: 24px;
-  }
-}
-.brand-header {
   position: relative;
   overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(16, 185, 129, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.06),
+    0 4px 12px rgba(0,0,0,0.04);
 }
 
-/* BLURRED BACKGROUND DESIGN */
+/* subtle glow background */
 .brand-header::before {
   content: "";
   position: absolute;
   inset: 0;
 
   background:
-    radial-gradient(circle at left, rgba(34,197,94,0.15), transparent 40%),
-    radial-gradient(circle at right, rgba(16,185,129,0.12), transparent 40%),
-    linear-gradient(135deg, #ffffff, #f0f7f2);
+    radial-gradient(circle at left, rgba(34,197,94,0.12), transparent 35%),
+    radial-gradient(circle at right, rgba(16,185,129,0.10), transparent 35%);
 
   z-index: 0;
 }
 
-/* ARROW EFFECT */
+/* sleek arrow */
 .brand-header::after {
   content: "";
   position: absolute;
-  right: -60px;
+  right: -50px;
   top: 0;
-  width: 200px;
+  width: 180px;
   height: 100%;
 
   background: linear-gradient(
@@ -149,12 +51,81 @@
     transparent 100%
   );
 
-  transform: skewX(-20deg);
+  transform: skewX(-18deg);
   z-index: 0;
 }
 
-/* PARA NASA TAAS PA DIN ANG CONTENT */
 .brand-header > * {
   position: relative;
   z-index: 1;
+}
+
+/* ===== LOGO (CIRCLE) ===== */
+.icon-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #2e7d32, #1b5e20);
+
+  box-shadow:
+    0 6px 14px rgba(46,125,50,0.25);
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== TEXT ===== */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-text h1 {
+  font-size: 26px;
+  color: #166534;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.subline {
+  font-size: 11px;
+  color: #64748b;
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.tagline {
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 2px;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .brand-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .brand-text {
+    align-items: center;
+  }
+
+  .icon-box {
+    width: 70px;
+    height: 70px;
+  }
 }
