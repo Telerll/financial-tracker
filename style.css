@@ -62,9 +62,9 @@
 .icon-box {
   width: 70px;
   height: 70px;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 14px; /* square with slight curve */
 
+  overflow: hidden;
   flex-shrink: 0;
 
   background: #2e7d32;
