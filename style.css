@@ -55,3 +55,60 @@
   position: relative;
   z-index: 1;
 }
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #f4f8f3 0%, #eef5ef 100%);
+  color: #1f2937;
+  padding: 16px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.card,
+.section {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.03);
+  margin-bottom: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+button {
+  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(46, 125, 50, 0.22);
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d7e2d9;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+}
