@@ -138,6 +138,15 @@
       line-height: 1.5;
     }
 
+    .highlight {
+      color: #166534;
+      font-weight: 700;
+      background: rgba(22, 163, 74, 0.10);
+      padding: 2px 6px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -162,6 +171,11 @@
     select,
     textarea {
       background: #f9fafb;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #94a3b8;
     }
 
     input:focus,
@@ -210,6 +224,7 @@
       overflow-x: auto;
       margin-top: 12px;
       border-radius: 12px;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
@@ -264,13 +279,17 @@
 
     .split-left,
     .split-right {
-      padding: 0;
       min-width: 0;
     }
 
+    .split-left,
     .split-right {
-      border-left: none;
-      padding-left: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      margin-bottom: 0;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
 
     .info-card,
@@ -444,30 +463,29 @@
     </div>
 
     <div class="section top-split">
-     <div class="top-split">
-  <div class="section split-left">
-    <h2>What is SUBI</h2>
-    <div class="info-card">
-      <p class="muted">
-        <span class="highlight">SUBI</span> comes from pagsusubi, a deep Filipino term meaning “to save” or mag-impok — the practice of setting aside money for the future.
-      </p>
-      <p class="muted">
-        <span class="highlight">SUBI PH</span> helps you track your savings and investments in a simple and organized way. Start today. Tayo nang mag-subi.
-      </p>
-    </div>
-  </div>
+      <div class="split-left">
+        <h2>What is SUBI</h2>
+        <div class="info-card">
+          <p class="muted">
+            <span class="highlight">SUBI</span> comes from pagsusubi, a deep Filipino term meaning “to save” or mag-impok — the practice of setting aside money for the future.
+          </p>
+          <p class="muted">
+            <span class="highlight">SUBI PH</span> helps you track your savings and investments in a simple and organized way. Start today. Tayo nang mag-subi.
+          </p>
+        </div>
+      </div>
 
-  <div class="section split-right">
-    <h3>Quick Notes</h3>
-    <div class="note-card">
-      <textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
-      <div class="note-actions">
-        <span id="noteStatus">Not saved</span>
-        <button onclick="clearNote()" class="danger-btn note-clear-btn">Clear</button>
+      <div class="split-right">
+        <h3>Quick Notes</h3>
+        <div class="note-card">
+          <textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
+          <div class="note-actions">
+            <span id="noteStatus">Not saved</span>
+            <button onclick="clearNote()" class="danger-btn note-clear-btn">Clear</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
     <div class="top-forms">
       <div class="section">
@@ -1510,6 +1528,6 @@
         statusEl.style.color = "#ef4444";
       };
     }
-</script>
+  </script>
 </body>
 </html>
