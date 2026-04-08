@@ -662,3 +662,116 @@ a.fab {
   z-index: 99999 !important;
   box-shadow: 0 12px 25px rgba(22, 163, 74, 0.4) !important;
 }
+/* ===== DESKTOP POLISH FIRST ===== */
+@media (min-width: 769px) {
+  .container {
+    max-width: 1280px;
+  }
+
+  .brand-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 18px 22px;
+    border-radius: 18px;
+  }
+
+  .brand-text {
+    align-items: flex-start;
+  }
+
+  .brand-text h1 {
+    font-size: 30px;
+  }
+
+  .subline {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .tagline {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .dashboard {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+
+  .card,
+  .section {
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  .card h3,
+  .section h2,
+  .section h3 {
+    font-size: 15px;
+  }
+
+  .value {
+    font-size: 24px;
+  }
+
+  .top-split {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .top-forms {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .split-left,
+  .split-right {
+    height: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 14px;
+  }
+
+  .btn-row {
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    align-items: stretch;
+  }
+
+  .table-wrap {
+    border-radius: 14px;
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 1150px;
+  }
+
+  th,
+  td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+
+  tbody tr:hover {
+    background: rgba(22, 163, 74, 0.04);
+  }
+
+  .muted,
+  .form-description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
