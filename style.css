@@ -25,22 +25,17 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-
   gap: 14px;
   padding: 20px 16px;
   border-radius: 22px;
-
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(14px);
-
+  -webkit-backdrop-filter: blur(14px);
   margin-bottom: 20px;
-
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.06),
     inset 0 1px rgba(255, 255, 255, 0.6);
-
   border: 1px solid rgba(255,255,255,0.7);
-
   position: sticky;
   top: 10px;
   z-index: 20;
@@ -53,9 +48,7 @@ body {
   border-radius: 24px;
   position: relative;
   overflow: hidden;
-
-  box-shadow:
-    0 8px 20px rgba(22, 163, 74, 0.3);
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
 }
 
 .icon-box::after {
@@ -64,6 +57,7 @@ body {
   inset: 0;
   border-radius: inherit;
   box-shadow: inset 0 1px rgba(255,255,255,0.3);
+  pointer-events: none;
 }
 
 /* ===== TEXT ===== */
@@ -76,16 +70,19 @@ body {
 .brand-text h1 {
   font-size: 30px;
   color: #166534;
+  line-height: 1.1;
 }
 
 .subline {
   font-size: 13px;
   color: #64748b;
+  margin-top: 4px;
 }
 
 .tagline {
   font-size: 12px;
   color: #94a3b8;
+  margin-top: 2px;
 }
 
 /* ===== DASHBOARD ===== */
@@ -96,35 +93,34 @@ body {
   margin-bottom: 20px;
 }
 
-/* ===== CARDS ===== */
+/* ===== CARDS / SECTIONS ===== */
 .card,
-.section,
-.split-left,
-.split-right {
+.section {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(10px);
-
+  -webkit-backdrop-filter: blur(10px);
   padding: 16px;
   border-radius: 20px;
-
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.06),
     inset 0 1px rgba(255, 255, 255, 0.6);
-
   transition: 0.25s ease;
 }
 
 .card:hover,
 .section:hover {
   transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ===== TITLES ===== */
+.card h3,
 .section h2,
-.section h3,
-.card h3 {
+.section h3 {
   color: #166534;
   font-size: 14px;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
 }
 
 /* ===== VALUES ===== */
@@ -133,34 +129,58 @@ body {
   font-weight: bold;
   margin-top: 6px;
   color: #14532d;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.45);
 }
 
-/* ===== SPLIT ===== */
+/* ===== SPLIT SECTION ===== */
 .top-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
-  margin-bottom: 20px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.split-left,
+.split-right {
+  min-width: 0;
 }
 
 /* ===== INFO CARD ===== */
 .info-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(240,253,244,0.95));
-  border: 1px solid rgba(22, 163, 74, 0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,253,244,0.98));
+  border: 1px solid rgba(22, 163, 74, 0.14);
   padding: 14px 16px;
   border-radius: 14px;
   margin-top: 8px;
-
   box-shadow:
     0 4px 12px rgba(0,0,0,0.04),
     inset 0 1px rgba(255,255,255,0.7);
 }
 
+.note-card {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #eef2f7;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.7),
+    0 4px 10px rgba(0,0,0,0.03);
+}
+
 /* ===== TEXT ===== */
 .muted {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.form-description {
   font-size: 12px;
   color: #64748b;
-  line-height: 1.6;
+  margin-top: 10px;
+  line-height: 1.55;
 }
 
 /* ===== HIGHLIGHT ===== */
@@ -170,94 +190,457 @@ body {
   background: rgba(22, 163, 74, 0.10);
   padding: 2px 6px;
   border-radius: 6px;
+  display: inline-block;
 }
 
-/* ===== FORM ===== */
+/* ===== FORM GRID ===== */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* ===== INPUT / SELECT / TEXTAREA ===== */
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
 }
 
 input,
 select,
 textarea {
+  width: 100%;
   padding: 10px 12px;
   border-radius: 14px;
   border: 1px solid #d1d5db;
   background: #f9fafb;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
+  outline: none;
   border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.18);
+  transform: scale(1.01);
+}
+
+textarea {
+  resize: none;
+  min-height: 96px;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #64748b 50%),
+    linear-gradient(135deg, #64748b 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
 }
 
 /* ===== BUTTON ===== */
 button {
-  padding: 12px;
+  width: 100%;
+  padding: 12px 14px;
   border-radius: 14px;
   border: none;
   background: linear-gradient(135deg, #16a34a, #166534);
   color: white;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 4px 12px rgba(22, 163, 74, 0.3),
+    inset 0 1px rgba(255, 255, 255, 0.2);
+}
+
+button:hover {
+  opacity: 0.96;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.secondary-btn {
+  background: linear-gradient(135deg, #78909c, #607d8b);
 }
 
 .danger-btn {
   background: #dc2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+}
+
+/* ===== BUTTON ROW ===== */
+.btn-row {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== NOTE ACTIONS ===== */
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.note-clear-btn {
+  width: auto !important;
+  padding: 8px 14px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+#noteStatus {
+  font-size: 12px;
+  color: #64748b;
+  background: #f8fafc;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
 }
 
 /* ===== TABLE ===== */
 .table-wrap {
   overflow-x: auto;
   border-radius: 14px;
+  margin-top: 12px;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
+  min-width: 1100px;
   border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px rgba(255,255,255,0.5);
 }
 
 th,
 td {
   padding: 10px;
+  border-bottom: 1px solid #edf2f7;
+  text-align: left;
   font-size: 12px;
+  vertical-align: top;
 }
 
 th {
   background: #f0fdf4;
   color: #166534;
+  letter-spacing: 0.2px;
 }
 
-/* ===== COLORS ===== */
+tbody tr:hover {
+  background: rgba(22, 163, 74, 0.04);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== TEXT COLORS ===== */
 .positive {
   color: #16a34a;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(22,163,74,0.10);
 }
 
 .negative {
   color: #dc2626;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(220,38,38,0.08);
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  .top-split {
-    grid-template-columns: 1fr;
+/* ===== DESKTOP POLISH ===== */
+@media (min-width: 769px) {
+  .container {
+    max-width: 1280px;
+  }
+
+  .brand-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 18px 22px;
+    border-radius: 18px;
+  }
+
+  .brand-text {
+    align-items: flex-start;
+  }
+
+  .brand-text h1 {
+    font-size: 30px;
   }
 
   .dashboard {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+
+  .card,
+  .section {
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  .card h3,
+  .section h2,
+  .section h3 {
+    font-size: 15px;
+  }
+
+  .value {
+    font-size: 24px;
+  }
+
+  .top-split {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .split-left,
+  .split-right {
+    height: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .btn-row {
+    align-items: stretch;
+  }
+
+  th,
+  td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+
+  .muted,
+  .form-description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+/* ===== MOBILE FINAL POLISH ===== */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+    background: linear-gradient(180deg, #f7fbf8 0%, #eef7f1 100%);
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .brand-header {
+    top: 6px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: 16px 14px;
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+
+  .icon-box {
+    width: 72px;
+    height: 72px;
+    border-radius: 18px;
+  }
+
+  .brand-text {
+    align-items: center;
+    text-align: center;
   }
 
   .brand-text h1 {
     font-size: 24px;
+    line-height: 1.05;
+  }
+
+  .subline {
+    font-size: 11px;
+    letter-spacing: 1.4px;
+  }
+
+  .tagline {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card,
+  .section {
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+  }
+
+  .card h3,
+  .section h2,
+  .section h3 {
+    font-size: 14px;
+  }
+
+  .value {
+    font-size: 18px;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .top-split {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    min-height: 46px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+
+  textarea {
+    min-height: 96px;
+  }
+
+  .btn-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .note-actions {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .note-clear-btn {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .muted,
+  .form-description,
+  #noteStatus {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  table {
+    min-width: 900px;
+  }
+
+  th,
+  td {
+    font-size: 12px;
+    padding: 9px 8px;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
   .dashboard {
     grid-template-columns: 1fr;
   }
-}
-.info-card {
-  background: red !important;
+
+  .brand-header {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .icon-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  .brand-text h1 {
+    font-size: 22px;
+  }
+
+  .subline {
+    font-size: 10px;
+    letter-spacing: 1.1px;
+  }
+
+  .tagline {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .card,
+  .section {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .value {
+    font-size: 17px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  th,
+  td {
+    font-size: 11px;
+    padding: 8px 7px;
+  }
 }
