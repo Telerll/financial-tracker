@@ -14,7 +14,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #f4f8f3;
+      background: linear-gradient(180deg, #ecfdf5 0%, #f8fafc 100%);
       color: #1f2937;
       padding: 16px;
     }
@@ -30,9 +30,11 @@
       gap: 14px;
       margin-bottom: 18px;
       padding: 16px;
-      background: white;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 16px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .icon-box {
@@ -45,6 +47,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 6px 14px rgba(46, 125, 50, 0.18);
     }
 
     .brand-logo {
@@ -92,11 +95,20 @@
 
     .card,
     .section {
-      background: white;
-      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 16px;
       padding: 14px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
       margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover,
+    .section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.07);
     }
 
     .card h3,
@@ -119,6 +131,13 @@
       line-height: 1.5;
     }
 
+    .form-description {
+      color: #666;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -133,8 +152,25 @@
       width: 100%;
       padding: 10px;
       border: 1px solid #cfd8dc;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    input,
+    select,
+    textarea {
+      background: #f9fafb;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
+      transform: scale(1.01);
     }
 
     textarea {
@@ -142,19 +178,25 @@
     }
 
     button {
-      background: #2e7d32;
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
       color: white;
       border: none;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+    }
+
+    button:hover {
+      opacity: 0.96;
+      transform: translateY(-1px);
     }
 
     .secondary-btn {
-      background: #607d8b;
+      background: linear-gradient(135deg, #78909c, #607d8b);
     }
 
     .danger-btn {
-      background: #c62828;
+      background: linear-gradient(135deg, #d32f2f, #b71c1c);
     }
 
     .btn-row {
@@ -167,12 +209,16 @@
     .table-wrap {
       overflow-x: auto;
       margin-top: 12px;
+      border-radius: 12px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       min-width: 1100px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     th,
@@ -227,6 +273,30 @@
       padding-left: 0;
     }
 
+    .info-card,
+    .note-card {
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: inset 0 1px rgba(255,255,255,0.65);
+      min-height: 150px;
+    }
+
+    .info-card .muted {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .info-card .muted:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-card textarea {
+      min-height: 90px;
+      border-radius: 10px;
+    }
+
     .top-forms {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -254,10 +324,6 @@
     #noteStatus {
       font-size: 12px;
       color: #64748b;
-    }
-
-    .split-right textarea {
-      min-height: 90px;
     }
 
     img {
@@ -317,6 +383,11 @@
       .section {
         padding: 12px;
       }
+
+      .info-card,
+      .note-card {
+        min-height: auto;
+      }
     }
 
     @media (max-width: 480px) {
@@ -375,16 +446,20 @@
     <div class="section top-split">
       <div class="split-left">
         <h2>What is SUBI</h2>
-        <p class="muted">SUBI means “to save,” from Pagsusubi — setting aside money for the future.</p>
-        <p class="muted">SUBI PH helps you track your savings and investments in a simple and organized way.</p>
+        <div class="info-card">
+          <p class="muted">SUBI means “to save,” from Pagsusubi — setting aside money for the future.</p>
+          <p class="muted">SUBI PH helps you track your savings and investments in a simple and organized way.</p>
+        </div>
       </div>
 
       <div class="split-right">
         <h3>Quick Notes</h3>
-        <textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
-        <div class="note-actions">
-          <span id="noteStatus">Not saved</span>
-          <button onclick="clearNote()" class="danger-btn note-clear-btn">Clear</button>
+        <div class="note-card">
+          <textarea id="quickNote" placeholder="Write your note here..." rows="4"></textarea>
+          <div class="note-actions">
+            <span id="noteStatus">Not saved</span>
+            <button onclick="clearNote()" class="danger-btn note-clear-btn">Clear</button>
+          </div>
         </div>
       </div>
     </div>
@@ -441,6 +516,10 @@
           <button onclick="updateTransaction()" id="updateTransactionBtn" class="secondary-btn" style="display:none;">Update Transaction</button>
           <button onclick="cancelTransactionEdit()" id="cancelTransactionEditBtn" class="danger-btn" style="display:none;">Cancel Edit</button>
         </div>
+
+        <p class="form-description">
+          Record your deposits and withdrawals to keep your balances updated and your savings history organized.
+        </p>
       </div>
     </div>
 
@@ -1069,7 +1148,7 @@
         });
       });
 
-      return ledger.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || String(a.id).localeCompare(String(b.id)));
+      return ledger.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || String(a.id).localeCompare(String(a.id)));
     }
 
     function computeSavingsMetrics(account) {
