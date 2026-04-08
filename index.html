@@ -764,36 +764,6 @@
     let editingDividendId = null;
     let editingInvestmentId = null;
 
-
-  const totalInvestmentValue = investments.reduce((s, i) => s + i.invValue, 0);
-
-  if (portfolioChart) portfolioChart.destroy();
-
-  portfolioChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Savings', 'MP2/Coop', 'Investments'],
-      datasets: [{
-        data: [totalSavings, totalDividendValue, totalInvestmentValue]
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '75%', // 👈 para mas manipis (less loaded)
-      animation: {
-        duration: 900,
-        easing: 'easeOutCubic'
-      },
-      plugins: {
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  });
-}
-    renderPortfolioChart();
     function peso(value) {
       return '₱' + Number(value || 0).toLocaleString('en-PH', {
         minimumFractionDigits: 2,
