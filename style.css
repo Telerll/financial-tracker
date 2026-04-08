@@ -658,3 +658,21 @@ tr:last-child td {
   width: 100% !important;
   height: 240px !important;
 }
+/* PREMIUM CHART CARD */
+
+.chart-box {
+  max-width: 360px;
+  margin: 10px auto;
+  padding: 12px;
+
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  backdrop-filter: blur(6px);
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 220px !important;
+}
