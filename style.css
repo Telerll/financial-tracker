@@ -650,8 +650,8 @@ tr:last-child td {
 }
 
 .chart-box {
-  max-width: 380px;
-  width: 100%;
+  max-width: 350px;
+  width: 180%;
 }
 
 .chart-box canvas {
