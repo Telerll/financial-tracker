@@ -676,3 +676,7 @@ tr:last-child td {
   width: 100% !important;
   height: 220px !important;
 }
+.chart-wrap {
+  display: flex;
+  justify-content: center;
+}
