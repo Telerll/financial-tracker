@@ -993,3 +993,10 @@ a.fab {
   padding: 2px 6px;
   border-radius: 6px;
 }
+.info-card {
+  background: rgba(22, 163, 74, 0.06);
+  border: 1px solid rgba(22, 163, 74, 0.15);
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
