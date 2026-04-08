@@ -363,7 +363,6 @@
       height: 340px;
     }
 
-    /* ===== CREDIT MODE SUMMARY CARDS ===== */
     .mode-groups {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -892,6 +891,32 @@
       return `${y}-${m}-${d}`;
     }
 
+    function toDateOnly(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    function formatDateKey(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function addDays(date, days) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + days);
+      return d;
+    }
+
+    function isSameMonthYear(a, b) {
+      return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+    }
+
+    function isLastDayOfMonth(date) {
+      return date.getDate() === new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    }
+
     function saveData() {
       localStorage.setItem('full_ft_accounts', JSON.stringify(accounts));
       localStorage.setItem('full_ft_transactions', JSON.stringify(transactions));
@@ -1320,63 +1345,166 @@
 
     function computeSavingsMetrics(account) {
       const ledger = buildSavingsLedger(account);
-      const currentBalance = ledger.length ? ledger[ledger.length - 1].runningBalance : account.beginningBalance;
-      const today = new Date(todayString());
-      const year = today.getFullYear();
-      const month = today.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const dailyRate = account.annualRate / 100 / 365;
+      const today = toDateOnly(todayString());
+      const startDate = toDateOnly(account.beginningDate);
+      const dailyRate = Number(account.annualRate || 0) / 100 / 365;
 
-      const dailyBalancesThisMonth = [];
-      let balance = account.beginningBalance;
-      let txPointer = 0;
-      const filteredLedger = ledger.filter(l => !l.isSystem);
+      const accountTransactions = transactions
+        .filter(t => t.accountId === account.id)
+        .sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || a.id - b.id);
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        const thisDate = new Date(year, month, day);
-        const thisDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const txByDate = {};
+      accountTransactions.forEach(t => {
+        if (!txByDate[t.transactionDate]) txByDate[t.transactionDate] = [];
+        txByDate[t.transactionDate].push(t);
+      });
 
-        if (new Date(account.beginningDate) > thisDate) {
-          dailyBalancesThisMonth.push(0);
-          continue;
-        }
+      const baseBalance = ledger.length
+        ? ledger[ledger.length - 1].runningBalance
+        : Number(account.beginningBalance || 0);
 
-        while (txPointer < filteredLedger.length && filteredLedger[txPointer].transactionDate <= thisDateStr) {
-          balance += filteredLedger[txPointer].transactionType === 'Deposit'
-            ? filteredLedger[txPointer].transactionAmount
-            : -filteredLedger[txPointer].transactionAmount;
-          txPointer++;
-        }
+      if (account.interestMode === 'simple') {
+        const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+        const monthlyGross = baseBalance * (Number(account.annualRate || 0) / 100 / 12);
+        const monthlyTax = monthlyGross * 0.20;
+        const monthlyNet = monthlyGross - monthlyTax;
+        const accruedNet = monthlyNet * (today.getDate() / daysInMonth);
+        const dailyInterest = monthlyNet / daysInMonth;
 
-        dailyBalancesThisMonth.push(balance);
+        return {
+          ledger,
+          currentBalance: baseBalance,
+          dailyInterest: Number(dailyInterest.toFixed(2)),
+          monthlyGross: Number(monthlyGross.toFixed(2)),
+          monthlyTax: Number(monthlyTax.toFixed(2)),
+          monthlyNet: Number(monthlyNet.toFixed(2)),
+          accruedNet: Number(accruedNet.toFixed(2)),
+          todayInterest: Number(dailyInterest.toFixed(2)),
+          creditedToday: 0,
+          creditedThisMonth: 0,
+          totalCreditedInterest: 0
+        };
       }
 
-      const dailyInterest = currentBalance * dailyRate;
-      const monthlyGross = account.interestMode === 'simple'
-        ? currentBalance * (account.annualRate / 100 / 12)
-        : dailyBalancesThisMonth.reduce((s, b) => s + (b * dailyRate), 0);
+      let simulatedBalance = Number(account.beginningBalance || 0);
 
-      const monthlyTax = monthlyGross * 0.20;
-      const monthlyNet = monthlyGross - monthlyTax;
+      let monthGrossAccumulator = 0;
+      let monthTaxAccumulator = 0;
+      let monthNetAccumulator = 0;
 
-      let accruedGross = 0;
-      const todayDay = today.getDate();
+      let currentMonthGross = 0;
+      let currentMonthTax = 0;
+      let currentMonthNet = 0;
 
-      for (let i = 0; i < todayDay && i < dailyBalancesThisMonth.length; i++) {
-        accruedGross += dailyBalancesThisMonth[i] * dailyRate;
+      let todayInterest = 0;
+      let creditedToday = 0;
+      let totalCreditedInterest = 0;
+
+      if (startDate > today) {
+        return {
+          ledger,
+          currentBalance: Number(account.beginningBalance || 0),
+          dailyInterest: 0,
+          monthlyGross: 0,
+          monthlyTax: 0,
+          monthlyNet: 0,
+          accruedNet: 0,
+          todayInterest: 0,
+          creditedToday: 0,
+          creditedThisMonth: 0,
+          totalCreditedInterest: 0
+        };
       }
 
-      const accruedTax = accruedGross * 0.20;
-      const accruedNet = accruedGross - accruedTax;
+      for (let cursor = new Date(startDate); cursor <= today; cursor = addDays(cursor, 1)) {
+        const dateKey = formatDateKey(cursor);
+        const dayTxs = txByDate[dateKey] || [];
+
+        dayTxs.forEach(t => {
+          simulatedBalance += t.transactionType === 'Deposit'
+            ? Number(t.transactionAmount)
+            : -Number(t.transactionAmount);
+        });
+
+        const dayGross = simulatedBalance * dailyRate;
+        const dayTax = dayGross * 0.20;
+        const dayNetExact = dayGross - dayTax;
+
+        const inCurrentMonth = isSameMonthYear(cursor, today);
+
+        if (account.interestMode === 'digital_daily') {
+          const dayNetPosted = Number(dayNetExact.toFixed(2));
+
+          simulatedBalance += dayNetPosted;
+          totalCreditedInterest += dayNetPosted;
+
+          if (inCurrentMonth) {
+            currentMonthGross += dayGross;
+            currentMonthTax += dayTax;
+            currentMonthNet += dayNetPosted;
+          }
+
+          if (formatDateKey(cursor) === formatDateKey(today)) {
+            todayInterest = dayNetPosted;
+            creditedToday = dayNetPosted;
+          }
+        } else {
+          monthGrossAccumulator += dayGross;
+          monthTaxAccumulator += dayTax;
+          monthNetAccumulator += dayNetExact;
+
+          if (inCurrentMonth) {
+            currentMonthGross = monthGrossAccumulator;
+            currentMonthTax = monthTaxAccumulator;
+            currentMonthNet = monthNetAccumulator;
+          }
+
+          if (formatDateKey(cursor) === formatDateKey(today)) {
+            todayInterest = Number(dayNetExact.toFixed(2));
+          }
+
+          const shouldCreditNow = isLastDayOfMonth(cursor);
+
+          if (shouldCreditNow) {
+            const monthNetPosted = Number(monthNetAccumulator.toFixed(2));
+            simulatedBalance += monthNetPosted;
+            totalCreditedInterest += monthNetPosted;
+
+            if (formatDateKey(cursor) === formatDateKey(today)) {
+              creditedToday = monthNetPosted;
+            }
+
+            monthGrossAccumulator = 0;
+            monthTaxAccumulator = 0;
+            monthNetAccumulator = 0;
+          }
+        }
+      }
+
+      const monthlyGross = Number(currentMonthGross.toFixed(2));
+      const monthlyTax = Number(currentMonthTax.toFixed(2));
+      const monthlyNet = Number(currentMonthNet.toFixed(2));
+
+      let accruedNet = monthlyNet;
+
+      if (account.interestMode !== 'digital_daily' && creditedToday > 0) {
+        accruedNet = 0;
+      }
 
       return {
         ledger,
-        currentBalance,
-        dailyInterest,
+        currentBalance: Number(simulatedBalance.toFixed(2)),
+        dailyInterest: Number(todayInterest.toFixed(2)),
         monthlyGross,
         monthlyTax,
         monthlyNet,
-        accruedNet
+        accruedNet: Number(accruedNet.toFixed(2)),
+        todayInterest: Number(todayInterest.toFixed(2)),
+        creditedToday: Number(creditedToday.toFixed(2)),
+        creditedThisMonth: account.interestMode === 'digital_daily'
+          ? Number(currentMonthNet.toFixed(2))
+          : 0,
+        totalCreditedInterest: Number(totalCreditedInterest.toFixed(2))
       };
     }
 
@@ -1399,7 +1527,10 @@
       accounts.forEach(account => {
         const m = computeSavingsMetrics(account);
         totalSavings += m.currentBalance;
-        totalInterest += account.interestMode === 'digital_daily' ? m.accruedNet : m.monthlyNet;
+
+        if (account.interestMode === 'digital_daily') {
+          totalInterest += m.creditedThisMonth;
+        }
 
         const modeLabel =
           account.interestMode === 'traditional' ? 'Traditional' :
@@ -1475,12 +1606,12 @@
                 <span class="mode-value">${peso(m.currentBalance)}</span>
               </div>
               <div class="mode-item">
-                <span class="mode-label">Today's Interest</span>
-                <span class="mode-value positive">${peso(m.dailyInterest)}</span>
+                <span class="mode-label">Interest Earned Today</span>
+                <span class="mode-value positive">${peso(m.todayInterest)}</span>
               </div>
               <div class="mode-item">
-                <span class="mode-label">Earned / MTD</span>
-                <span class="mode-value">${peso(m.accruedNet)}</span>
+                <span class="mode-label">Earned This Month</span>
+                <span class="mode-value">${peso(m.creditedThisMonth)}</span>
               </div>
               <div class="mode-item">
                 <span class="mode-label">Updates</span>
@@ -1493,6 +1624,7 @@
 
       monthlyAccounts.forEach(account => {
         const m = computeSavingsMetrics(account);
+        const isCreditedToday = m.creditedToday > 0;
 
         monthlyWrap.innerHTML += `
           <div class="mode-bank-card monthly">
@@ -1503,16 +1635,16 @@
                 <span class="mode-value">${peso(m.currentBalance)}</span>
               </div>
               <div class="mode-item">
-                <span class="mode-label">Accrued / MTD</span>
-                <span class="mode-value positive">${peso(m.accruedNet)}</span>
+                <span class="mode-label">${isCreditedToday ? 'Interest Credited' : 'Accrued This Month'}</span>
+                <span class="mode-value positive">${peso(isCreditedToday ? m.creditedToday : m.accruedNet)}</span>
               </div>
               <div class="mode-item">
                 <span class="mode-label">Monthly Net</span>
                 <span class="mode-value">${peso(m.monthlyNet)}</span>
               </div>
               <div class="mode-item">
-                <span class="mode-label">Next Credit</span>
-                <span class="mode-value">${formatNextCreditDate()}</span>
+                <span class="mode-label">${isCreditedToday ? 'Credits' : 'Next Credit'}</span>
+                <span class="mode-value">${isCreditedToday ? 'Month-end Posted' : formatNextCreditDate()}</span>
               </div>
             </div>
           </div>
