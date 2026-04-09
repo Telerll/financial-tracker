@@ -924,6 +924,26 @@
       localStorage.setItem('full_ft_investments', JSON.stringify(investments));
     }
 
+    function getAccountFlowTotals(accountId) {
+      const accountTx = transactions.filter(t => t.accountId === accountId);
+
+      let deposits = 0;
+      let withdrawals = 0;
+
+      accountTx.forEach(t => {
+        if (t.transactionType === 'Deposit') {
+          deposits += Number(t.transactionAmount || 0);
+        } else if (t.transactionType === 'Withdrawal') {
+          withdrawals += Number(t.transactionAmount || 0);
+        }
+      });
+
+      return {
+        deposits,
+        withdrawals
+      };
+    }
+
     function addAccount() {
       const accountName = document.getElementById('accountName').value.trim();
       const accountType = document.getElementById('accountType').value;
@@ -1373,7 +1393,7 @@
 
         return {
           ledger,
-          currentBalance: baseBalance,
+          currentBalance: Number(baseBalance.toFixed(2)),
           dailyInterest: Number(dailyInterest.toFixed(2)),
           monthlyGross: Number(monthlyGross.toFixed(2)),
           monthlyTax: Number(monthlyTax.toFixed(2)),
@@ -1420,23 +1440,14 @@
         const dateKey = formatDateKey(cursor);
         const dayTxs = txByDate[dateKey] || [];
 
-        dayTxs.forEach(t => {
-          simulatedBalance += t.transactionType === 'Deposit'
-            ? Number(t.transactionAmount)
-            : -Number(t.transactionAmount);
-        });
-
-        const dayGross = simulatedBalance * dailyRate;
+        const openingBalance = simulatedBalance;
+        const dayGross = openingBalance * dailyRate;
         const dayTax = dayGross * 0.20;
         const dayNetExact = dayGross - dayTax;
-
         const inCurrentMonth = isSameMonthYear(cursor, today);
 
         if (account.interestMode === 'digital_daily') {
           const dayNetPosted = Number(dayNetExact.toFixed(2));
-
-          simulatedBalance += dayNetPosted;
-          totalCreditedInterest += dayNetPosted;
 
           if (inCurrentMonth) {
             currentMonthGross += dayGross;
@@ -1448,6 +1459,15 @@
             todayInterest = dayNetPosted;
             creditedToday = dayNetPosted;
           }
+
+          simulatedBalance += dayNetPosted;
+          totalCreditedInterest += dayNetPosted;
+
+          dayTxs.forEach(t => {
+            simulatedBalance += t.transactionType === 'Deposit'
+              ? Number(t.transactionAmount)
+              : -Number(t.transactionAmount);
+          });
         } else {
           monthGrossAccumulator += dayGross;
           monthTaxAccumulator += dayTax;
@@ -1463,9 +1483,7 @@
             todayInterest = Number(dayNetExact.toFixed(2));
           }
 
-          const shouldCreditNow = isLastDayOfMonth(cursor);
-
-          if (shouldCreditNow) {
+          if (isLastDayOfMonth(cursor)) {
             const monthNetPosted = Number(monthNetAccumulator.toFixed(2));
             simulatedBalance += monthNetPosted;
             totalCreditedInterest += monthNetPosted;
@@ -1478,6 +1496,12 @@
             monthTaxAccumulator = 0;
             monthNetAccumulator = 0;
           }
+
+          dayTxs.forEach(t => {
+            simulatedBalance += t.transactionType === 'Deposit'
+              ? Number(t.transactionAmount)
+              : -Number(t.transactionAmount);
+          });
         }
       }
 
@@ -1486,7 +1510,6 @@
       const monthlyNet = Number(currentMonthNet.toFixed(2));
 
       let accruedNet = monthlyNet;
-
       if (account.interestMode !== 'digital_daily' && creditedToday > 0) {
         accruedNet = 0;
       }
@@ -1596,11 +1619,24 @@
 
       dailyAccounts.forEach(account => {
         const m = computeSavingsMetrics(account);
+        const flow = getAccountFlowTotals(account.id);
 
         dailyWrap.innerHTML += `
           <div class="mode-bank-card daily">
             <div class="mode-bank-name">${account.accountName}</div>
             <div class="mode-bank-meta">
+              <div class="mode-item">
+                <span class="mode-label">Beginning Balance</span>
+                <span class="mode-value">${peso(account.beginningBalance)}</span>
+              </div>
+              <div class="mode-item">
+                <span class="mode-label">Total Deposits</span>
+                <span class="mode-value positive">${peso(flow.deposits)}</span>
+              </div>
+              <div class="mode-item">
+                <span class="mode-label">Total Withdrawals</span>
+                <span class="mode-value negative">${peso(flow.withdrawals)}</span>
+              </div>
               <div class="mode-item">
                 <span class="mode-label">Current Balance</span>
                 <span class="mode-value">${peso(m.currentBalance)}</span>
@@ -1613,10 +1649,6 @@
                 <span class="mode-label">Earned This Month</span>
                 <span class="mode-value">${peso(m.creditedThisMonth)}</span>
               </div>
-              <div class="mode-item">
-                <span class="mode-label">Updates</span>
-                <span class="mode-value">Daily</span>
-              </div>
             </div>
           </div>
         `;
@@ -1624,6 +1656,7 @@
 
       monthlyAccounts.forEach(account => {
         const m = computeSavingsMetrics(account);
+        const flow = getAccountFlowTotals(account.id);
         const isCreditedToday = m.creditedToday > 0;
 
         monthlyWrap.innerHTML += `
@@ -1631,16 +1664,24 @@
             <div class="mode-bank-name">${account.accountName}</div>
             <div class="mode-bank-meta">
               <div class="mode-item">
+                <span class="mode-label">Beginning Balance</span>
+                <span class="mode-value">${peso(account.beginningBalance)}</span>
+              </div>
+              <div class="mode-item">
+                <span class="mode-label">Total Deposits</span>
+                <span class="mode-value positive">${peso(flow.deposits)}</span>
+              </div>
+              <div class="mode-item">
+                <span class="mode-label">Total Withdrawals</span>
+                <span class="mode-value negative">${peso(flow.withdrawals)}</span>
+              </div>
+              <div class="mode-item">
                 <span class="mode-label">Current Balance</span>
                 <span class="mode-value">${peso(m.currentBalance)}</span>
               </div>
               <div class="mode-item">
                 <span class="mode-label">${isCreditedToday ? 'Interest Credited' : 'Accrued This Month'}</span>
                 <span class="mode-value positive">${peso(isCreditedToday ? m.creditedToday : m.accruedNet)}</span>
-              </div>
-              <div class="mode-item">
-                <span class="mode-label">Monthly Net</span>
-                <span class="mode-value">${peso(m.monthlyNet)}</span>
               </div>
               <div class="mode-item">
                 <span class="mode-label">${isCreditedToday ? 'Credits' : 'Next Credit'}</span>
