@@ -554,7 +554,7 @@
       </div>
 
       <div class="card">
-        <h3>Total Accrued / Credited Interest</h3>
+        <h3>Total Daily Credited Interest</h3>
         <div class="value" id="dashInterest">₱0.00</div>
       </div>
 
@@ -655,27 +655,6 @@
         <p class="form-description">
           Record your deposits and withdrawals to keep your balances updated and your savings history organized.
         </p>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>Transaction History</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Bank</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Running Balance</th>
-              <th>Note</th>
-              <th>Action</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody id="transactionsTableBody"></tbody>
-        </table>
       </div>
     </div>
 
@@ -938,10 +917,7 @@
         }
       });
 
-      return {
-        deposits,
-        withdrawals
-      };
+      return { deposits, withdrawals };
     }
 
     function addAccount() {
@@ -1693,33 +1669,6 @@
       });
     }
 
-    function renderTransactionsTable() {
-      const tbody = document.getElementById('transactionsTableBody');
-      tbody.innerHTML = '';
-      let rows = [];
-
-      accounts.forEach(account => {
-        rows = rows.concat(buildSavingsLedger(account));
-      });
-
-      rows.sort((a, b) => new Date(a.transactionDate) - new Date(b.transactionDate) || String(a.id).localeCompare(String(b.id)));
-
-      rows.forEach(row => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${row.transactionDate}</td>
-            <td>${row.accountName}</td>
-            <td class="${row.transactionType === 'Withdrawal' ? 'negative' : 'positive'}">${row.transactionType}</td>
-            <td>${peso(row.transactionAmount)}</td>
-            <td>${peso(row.runningBalance)}</td>
-            <td>${row.transactionNote || '-'}</td>
-            <td>${row.isSystem ? '-' : `<button class="danger-btn" onclick="deleteTransaction(${row.id})">Delete</button>`}</td>
-            <td>${row.isSystem ? '-' : `<button class="secondary-btn" onclick="editTransaction(${row.id})">Edit</button>`}</td>
-          </tr>
-        `;
-      });
-    }
-
     function renderDividendTable() {
       const tbody = document.getElementById('dividendTableBody');
       tbody.innerHTML = '';
@@ -1954,7 +1903,6 @@
       renderAccountOptions();
       renderAccountsTable();
       renderCreditModeCards();
-      renderTransactionsTable();
       renderDividendTable();
       renderInvestmentTable();
       renderYearlySummary();
