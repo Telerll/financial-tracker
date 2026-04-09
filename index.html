@@ -764,6 +764,9 @@
           <option value="Mutual Fund">Mutual Fund</option>
           <option value="REIT">REIT</option>
           <option value="UITF">UITF</option>
+          <option value="RTBs">RTBs (Retail Treasury Bonds)</option>
+          <option value="FXTNs">FXTNs (Fixed Treasury Notes)</option>
+          <option value="T-Bills">T-Bills (Treasury Bills)</option>
           <option value="Crypto">Crypto</option>
           <option value="Business">Business</option>
           <option value="Other">Other</option>
@@ -814,6 +817,28 @@
             </tr>
           </thead>
           <tbody id="yearlySummaryTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Interest History Log (Daily)</h2>
+      <p class="muted">
+        Daily record of computed interest per account (for audit and tracking).
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Bank</th>
+              <th>Opening Balance</th>
+              <th>Interest Earned</th>
+              <th>Credited</th>
+            </tr>
+          </thead>
+          <tbody id="interestHistoryBody"></tbody>
         </table>
       </div>
     </div>
@@ -1396,7 +1421,7 @@
       let creditedToday = 0;
       let totalCreditedInterest = 0;
 
-      if (startDate > today) {
+      if (startDate >= today) {
         return {
           ledger,
           currentBalance: Number(account.beginningBalance || 0),
@@ -1412,7 +1437,7 @@
         };
       }
 
-      for (let cursor = new Date(startDate); cursor <= today; cursor = addDays(cursor, 1)) {
+      for (let cursor = addDays(new Date(startDate), 1); cursor <= today; cursor = addDays(cursor, 1)) {
         const dateKey = formatDateKey(cursor);
         const dayTxs = txByDate[dateKey] || [];
 
@@ -1798,6 +1823,76 @@
       }
     }
 
+    function renderInterestHistory() {
+      const tbody = document.getElementById('interestHistoryBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+
+      const today = toDateOnly(todayString());
+      let logs = [];
+
+      accounts.forEach(account => {
+        const startDate = toDateOnly(account.beginningDate);
+        const dailyRate = Number(account.annualRate || 0) / 100 / 365;
+        let balance = Number(account.beginningBalance || 0);
+
+        if (startDate >= today) return;
+
+        for (let cursor = addDays(new Date(startDate), 1); cursor <= today; cursor = addDays(cursor, 1)) {
+          const dateKey = formatDateKey(cursor);
+          const openingBalance = balance;
+          const gross = openingBalance * dailyRate;
+          const tax = gross * 0.20;
+          const net = gross - tax;
+
+          let credited = 0;
+
+          if (account.interestMode === 'digital_daily') {
+            credited = Number(net.toFixed(2));
+            balance += credited;
+          } else if (account.interestMode === 'simple') {
+            credited = 0;
+          }
+
+          logs.push({
+            date: dateKey,
+            bank: account.accountName,
+            opening: Number(openingBalance.toFixed(2)),
+            interest: Number(net.toFixed(2)),
+            credited
+          });
+
+          transactions
+            .filter(t => t.accountId === account.id && t.transactionDate === dateKey)
+            .forEach(t => {
+              balance += t.transactionType === 'Deposit'
+                ? Number(t.transactionAmount)
+                : -Number(t.transactionAmount);
+            });
+        }
+      });
+
+      logs
+        .sort((a, b) => new Date(b.date) - new Date(a.date) || a.bank.localeCompare(b.bank))
+        .slice(0, 200)
+        .forEach(log => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${log.date}</td>
+              <td>${log.bank}</td>
+              <td>${peso(log.opening)}</td>
+              <td class="positive">${peso(log.interest)}</td>
+              <td>${log.credited > 0 ? peso(log.credited) : '-'}</td>
+            </tr>
+          `;
+        });
+
+      if (!logs.length) {
+        tbody.innerHTML = '<tr><td colspan="5">No interest history yet.</td></tr>';
+      }
+    }
+
     function renderPortfolioChart() {
       const savingsTotal = accounts.reduce((sum, account) => {
         return sum + computeSavingsMetrics(account).currentBalance;
@@ -1906,6 +2001,7 @@
       renderDividendTable();
       renderInvestmentTable();
       renderYearlySummary();
+      renderInterestHistory();
       updateNetWorth();
       renderPortfolioChart();
 
